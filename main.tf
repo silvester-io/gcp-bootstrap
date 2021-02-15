@@ -6,7 +6,6 @@ resource "google_container_cluster" "default" {
   name               = "silvester-cluster"
   location           = "europe-west1-b" # MUST BE A SINGLE ZONE, OTHERWISE IT COUNTS AS A REGIONAL CLUSTER
   min_master_version = "version"
-  node_locations = ["europe-west1-b"] # CAN BE MULTI ZONE
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
