@@ -5,7 +5,6 @@ provider "google" {
 resource "google_container_cluster" "default" {
   name               = "silvester-cluster"
   location           = "europe-west1-b" # MUST BE A SINGLE ZONE, OTHERWISE IT COUNTS AS A REGIONAL CLUSTER
-  min_master_version = "version"
 
 
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -19,6 +18,7 @@ resource "google_container_node_pool" "memory_optimized" {
   name     = "silvester-nodepool"
   cluster  = google_container_cluster.default.name
   initial_node_count = 1
+  version = "1.0.0"
 
   autoscaling {
     min_node_count = 1
