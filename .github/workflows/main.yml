@@ -1,9 +1,9 @@
-name: Provision GCP Anthos Cluster
+name: Terraform Apply
 
 on:
   push:
-    tags:        
-      - '*'
+    branches:        
+      - "master"
       
 jobs:
   terraform:
