@@ -19,7 +19,7 @@ resource "google_container_node_pool" "memory_optimized" {
   cluster  = google_container_cluster.default.name
   initial_node_count = 1
   version = "1.0.0"
-  zone = "europe-west1-b" 
+  location = "europe-west1-b" 
 
   autoscaling {
     min_node_count = 1
