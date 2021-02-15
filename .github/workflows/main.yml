@@ -2,7 +2,7 @@ name: Provision GCP Anthos Cluster
 on:
   push:
     branches:
-      - refs/tags/*
+      - refs/tags/@orgname/*
       
 jobs:
   terraform:
