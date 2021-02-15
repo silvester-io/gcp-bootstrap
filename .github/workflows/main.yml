@@ -4,7 +4,11 @@ on:
   push:
     branches:        
       - "master"
-      
+
+defaults:
+  run:
+    working-directory: ${{ env.tf_actions_working_dir }}
+    
 jobs:
   terraform:
     name: Linux build on node ${{ matrix.node_version }}
@@ -22,7 +26,7 @@ jobs:
         export_default_credentials: true
     
     - name: "Setup Terraform CLI"
-      uses: hashicorp/setup-terraform@v1.0.1
+      uses: hashicorp/setup-terraform@v1
  
     - name: "Run Terraform Init"
       run: terraform init -input=false
