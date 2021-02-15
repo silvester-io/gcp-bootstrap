@@ -5,14 +5,14 @@ on:
     branches:        
       - "master"
 
-defaults:
-  run:
-    working-directory: ${{ env.tf_actions_working_dir }}
-    
+
 jobs:
   terraform:
     name: Linux build on node ${{ matrix.node_version }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: /terraform
 
     steps:
     - name: Checkout
