@@ -35,7 +35,7 @@ jobs:
       continue-on-error: true
 
     - name: "Import node pool"
-      run: terraform import google_container_node_pool.memory_optimized projects/silvester-304916/zones/europe-west1-b/clusters/silvester-cluster/nodePools/silvester-nodepool
+      run: terraform import google_container_node_pool.memory_optimized europe-west1-b/clusters/silvester-cluster/nodePools/silvester-nodepool
       continue-on-error: true
 
     - name: "Run Terraform Apply"
