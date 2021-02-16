@@ -31,7 +31,7 @@ jobs:
       run: terraform init -input=false
  
     - name: "Run Terraform Import"
-      run: terraform import google_container_cluster.default europe-west1-b/default
+      run: terraform import google_container_cluster.default europe-west1-b/silvester-cluster
       continue-on-error: true
 
     - name: "Run Terraform Apply"
