@@ -30,8 +30,9 @@ jobs:
     - name: "Run Terraform Init"
       run: terraform init -input=false
  
-    - name: "Run Terraform Destroy"
-      run: terraform destroy -input=false
+    - name: "Run Terraform Import"
+      run: terraform import google_container_cluster.default europe-west1-b/default
+      continue-on-error: true
 
     - name: "Run Terraform Apply"
       run: terraform apply -input=false -auto-approve
