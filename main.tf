@@ -18,7 +18,6 @@ resource "google_container_node_pool" "memory_optimized" {
   name     = "silvester-nodepool"
   cluster  = google_container_cluster.default.name
   initial_node_count = 1
-  version = "1.0.0"
   location = "europe-west1-b" 
 
   autoscaling {
