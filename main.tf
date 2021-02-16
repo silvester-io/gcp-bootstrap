@@ -27,6 +27,7 @@ resource "google_container_node_pool" "memory_optimized" {
 
   management {
     auto_repair = true
+    auto_upgrade = true
   }
 
   node_config {
