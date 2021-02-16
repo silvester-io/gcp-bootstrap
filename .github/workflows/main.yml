@@ -27,11 +27,15 @@ jobs:
     - name: "Setup Terraform CLI"
       uses: hashicorp/setup-terraform@v1
  
-    - name: "Run Terraform Init"
+    - name: "Init terraform"
       run: terraform init -input=false
  
-    - name: "Run Terraform Import"
+    - name: "Import container cluster"
       run: terraform import google_container_cluster.default europe-west1-b/silvester-cluster
+      continue-on-error: true
+
+    - name: "Import node pool"
+      run: terraform import google_container_node_pool.memory_optimized europe-west1-b/silvester-nodepool
       continue-on-error: true
 
     - name: "Run Terraform Apply"
