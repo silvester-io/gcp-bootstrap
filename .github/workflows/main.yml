@@ -34,6 +34,10 @@ jobs:
       run: terraform import google_container_cluster.default europe-west1-b/silvester-cluster
       continue-on-error: true
 
+    - name: "Import ingress node pool"
+      run: terraform import google_container_node_pool.default europe-west1-b/silvester-cluster/silvester-nodepool-ingress
+      continue-on-error: true
+
     - name: "Import node pool"
       run: terraform import google_container_node_pool.memory_optimized europe-west1-b/silvester-cluster/silvester-nodepool
       continue-on-error: true
