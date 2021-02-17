@@ -14,6 +14,34 @@ resource "google_container_cluster" "default" {
   initial_node_count       = 1
 }
 
+
+resource "google_container_node_pool" "default" {
+  name     = "silvester-nodepool-ingress"
+  cluster  = google_container_cluster.default.name
+  initial_node_count = 1
+  location = "europe-west1-b" 
+
+  autoscaling {
+    min_node_count = 1
+    max_node_count = 1
+  }
+
+  management {
+    auto_repair = true
+    auto_upgrade = true
+  }
+
+  node_config {
+    machine_type = "e2-micro" 
+    preemptible  = true 
+    taint = [ {
+      effect = "NoSchedule"
+      key = "dedicated"
+      value = "ingress"
+    } ]
+  }
+}
+
 resource "google_container_node_pool" "memory_optimized" {
   name     = "silvester-nodepool"
   cluster  = google_container_cluster.default.name
