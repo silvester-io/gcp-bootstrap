@@ -35,7 +35,7 @@ resource "google_container_node_pool" "default" {
     machine_type = "e2-micro" 
     preemptible  = true 
     taint = [ {
-      effect = "NoSchedule"
+      effect = "no_schedule"
       key = "dedicated"
       value = "ingress"
     } ]
