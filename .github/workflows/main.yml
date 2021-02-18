@@ -54,7 +54,6 @@ jobs:
         cluster_name: silvester-cluster
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
-    - run: export TF_VAR_kubeconfig_path=$KUBECONFIG
 
     - name: "Run Terraform Apply - Kubernetes"
-      run: terraform -chdir=kubernetes apply -input=false -auto-approve
+      run: terraform -chdir=kubernetes -var "kubeconfig_path=$KUBECONFIG" apply -input=false -auto-approve
