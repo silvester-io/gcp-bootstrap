@@ -13,6 +13,6 @@ variable "cluster_location" {
     default = "europe-west1-b"
 }
 
-varialbe "kubeconfig_path" {
+variable "kubeconfig_path" {
     type = string
 }
