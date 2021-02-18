@@ -6,12 +6,12 @@ on:
       - "master"
 
 jobs:
-  terraform:
+  terraform-cluster:
     name: Linux build on node ${{ matrix.node_version }}
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./
+        working-directory: ./cluster
 
     steps:
     - name: Checkout
@@ -30,27 +30,32 @@ jobs:
 
       
     - name: "CLUSTER - Terraform Init"
-      run: terraform -chdir=cluster init -input=false
+      run: terraform  init -input=false
 
     - name: "CLUSTER - Import cluster"
-      run: terraform -chdir=cluster import google_container_cluster.silvester_cluster europe-west1-b/silvester-cluster 
+      run: terraform import google_container_cluster.silvester_cluster europe-west1-b/silvester-cluster 
       continue-on-error: true
 
     - name: "CLUSTER - Import ingress node pool"
-      run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_ingress europe-west1-b/silvester-cluster/silvester-nodepool-ingress 
+      run: terraform import google_container_node_pool.silvester_nodepool_ingress europe-west1-b/silvester-cluster/silvester-nodepool-ingress 
       continue-on-error: true
 
     - name: "CLUSTER - Import apps node pool"
-      run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps 
+      run: terraform import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps 
       continue-on-error: true
 
     - name: "CLUSTER - Terraform Apply"
-      run: terraform -chdir=cluster apply -input=false -auto-approve
+      run: terraform apply -input=false -auto-approve
 
-
+  terraform-kubernetes:
+    name: Linux build on node ${{ matrix.node_version }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./kubernetes
 
     - name: "KUBERNETES - Terraform Init"
-      run: terraform -chdir=kubernetes init -input=false
+      run: terraform  init -input=false
 
     - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main
@@ -60,12 +65,12 @@ jobs:
         credentials: ${{ secrets.GCP_SA_KEY }}
         
     - name: "KUBERNETES - Import ingress namespace"
-      run: terraform -chdir=cluster import kubernetes_namespace.ingress_nginx ingress-nginx 
+      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform import kubernetes_namespace.ingress_nginx ingress-nginx 
       continue-on-error: true
 
     - name: "KUBERNETES - Import ingress service account"
-      run: terraform -chdir=cluster import kubernetes_service_account.ingress_nginx_service_account ingress-nginx/ingress-nginx-service-account 
+      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform import kubernetes_service_account.ingress_nginx_service_account ingress-nginx/ingress-nginx-service-account 
       continue-on-error: true
 
     - name: "KUBERNETES - Terraform Apply"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes  apply -input=false -auto-approve 
+      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform   apply -input=false -auto-approve 
