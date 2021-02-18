@@ -3,7 +3,7 @@
 data "google_client_config" "provider" {}
 
 provider "kubernetes" {
-  config_path = "KUBECONFIG"
+  config_path = var.kubeconfig_path
 }
 
 #INGRESS CONTROLLER
