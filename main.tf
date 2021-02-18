@@ -34,6 +34,7 @@ resource "google_container_node_pool" "default" {
   node_config {
     machine_type = "e2-micro" 
     preemptible  = true 
+    disk_size_gb = "10GB"
     taint = [ {
       effect = "NO_SCHEDULE"
       key = "dedicated"
