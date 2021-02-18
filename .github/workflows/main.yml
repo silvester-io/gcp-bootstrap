@@ -31,16 +31,19 @@ jobs:
       run: terraform init -input=false
  
     - name: "Import container cluster"
-      run: terraform import google_container_cluster.silvester_cluster europe-west1-b/silvester-cluster
+      run: terraform -chdir=cluster import google_container_cluster.silvester_cluster europe-west1-b/silvester-cluster 
       continue-on-error: true
 
     - name: "Import ingress node pool"
-      run: terraform import google_container_node_pool.silvester_nodepool_ingress europe-west1-b/silvester-cluster/silvester-nodepool-ingress
+      run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_ingress europe-west1-b/silvester-cluster/silvester-nodepool-ingress 
       continue-on-error: true
 
     - name: "Import node pool"
-      run: terraform import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps
+      run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps 
       continue-on-error: true
 
-    - name: "Run Terraform Apply"
-      run: terraform apply -input=false -auto-approve
+    - name: "Run Terraform Apply - Cluster"
+      run: terraform -chdir=cluster apply -input=false -auto-approve
+
+    - name: "Run Terraform Apply - Ingress"
+      run: terraform -chdir=ingress apply -input=false -auto-approve
