@@ -60,4 +60,4 @@ jobs:
         credentials: ${{ secrets.GCP_SA_KEY }}
 
     - name: "KUBERNETES - Terraform Apply"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes  apply -input=false -auto-approve
+      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes  apply -input=false -auto-approve 
