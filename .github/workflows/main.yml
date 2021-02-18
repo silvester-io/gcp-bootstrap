@@ -27,33 +27,37 @@ jobs:
     - name: "Setup Terraform CLI"
       uses: hashicorp/setup-terraform@v1
  
-    - name: "Init terraform - Cluster"
+    - name: "CLUSTER - Terraform Init"
       run: terraform -chdir=cluster init -input=false
 
-    - name: "Init terraform - Kubernetes"
-      run: terraform -chdir=kubernetes init -input=false
- 
-    - name: "Import container cluster"
+    - name: "CLUSTER - Import cluster"
       run: terraform -chdir=cluster import google_container_cluster.silvester_cluster europe-west1-b/silvester-cluster 
       continue-on-error: true
 
-    - name: "Import ingress node pool"
+    - name: "CLUSTER - Import ingress node pool"
       run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_ingress europe-west1-b/silvester-cluster/silvester-nodepool-ingress 
       continue-on-error: true
 
-    - name: "Import apps node pool"
+    - name: "CLUSTER - Import apps node pool"
       run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps 
       continue-on-error: true
 
-    - name: "Run Terraform Apply - Cluster"
+    - name: "CLUSTER - Terraform Apply"
       run: terraform -chdir=cluster apply -input=false -auto-approve
 
-    - id: get-credentials
+
+
+    - name: "KUBERNETES - Terraform Init"
+      run: terraform -chdir=kubernetes init -input=false
+
+    - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main
       with:
         cluster_name: silvester-cluster
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
 
-    - name: "Run Terraform Apply - Kubernetes"
+    - run: export TF_VAR_kubeconfig=$KUBECONFIG
+
+    - name: "KUBERNETES - Terraform Apply"
       run: terraform -chdir=kubernetes -var "kubeconfig_path=$KUBECONFIG" apply -input=false -auto-approve
