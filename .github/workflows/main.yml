@@ -51,11 +51,11 @@ jobs:
 
     - name: "KUBERNETES - Terraform Init"
       run: terraform -chdir=kubernetes init -input=false
-
+ 
     - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main
       with:
-        cluster_name: silvester-cluster
+        cluster_name: silvester-cluster 
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
         
