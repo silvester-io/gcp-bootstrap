@@ -3,7 +3,7 @@ provider "google" {
 }
 
 # CLUSTER
-resource "google_container_cluster" "default" {
+resource "google_container_cluster" "silvester_cluster" {
   name = "silvester-cluster"
   location = "europe-west1-b" # MUST BE A SINGLE ZONE, OTHERWISE IT COUNTS AS A REGIONAL CLUSTER
 
@@ -16,9 +16,9 @@ resource "google_container_cluster" "default" {
 
 
 # INGRESS NODE POOL
-resource "google_container_node_pool" "default" {
+resource "google_container_node_pool" "silvester_nodepool_ingress" {
   name     = "silvester-nodepool-ingress"
-  cluster  = google_container_cluster.default.name
+  cluster  = google_container_cluster.silvester_cluster.name
   initial_node_count = 1
   location = "europe-west1-b" 
 
@@ -45,9 +45,9 @@ resource "google_container_node_pool" "default" {
 }
 
 # APPLICATION NODE POOL
-resource "google_container_node_pool" "memory_optimized" {
-  name     = "silvester-nodepool"
-  cluster  = google_container_cluster.default.name
+resource "google_container_node_pool" "silvester_nodepool_apps" {
+  name     = "silvester-nodepool-apps"
+  cluster  = google_container_cluster.silvester_cluster.name
   initial_node_count = 1
   location = "europe-west1-b" 
 
@@ -70,18 +70,13 @@ resource "google_container_node_pool" "memory_optimized" {
 #SETUP KUBECTL
 data "google_client_config" "provider" {}
 
-data "google_container_cluster" "default" {
-  name     = "default"
-  location = "europe-west1-b"
-}
-
 provider "kubernetes" {
   load_config_file = false
 
-  host  = "https://${data.google_container_cluster.default.endpoint}"
+  host  = "https://${google_container_cluster.silvester_cluster.endpoint}"
   token = data.google_client_config.provider.access_token
   cluster_ca_certificate = base64decode(
-    data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
+    data.google_container_cluster.silvester_cluster.master_auth[0].cluster_ca_certificate,
   )
 }
 
