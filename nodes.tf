@@ -1,11 +1,11 @@
 provider "google" {
-  project = "silvester-304916"
+  project = var.project
 }
 
 # CLUSTER
 resource "google_container_cluster" "silvester_cluster" {
   name = "silvester-cluster"
-  location = "europe-west1-b" # MUST BE A SINGLE ZONE, OTHERWISE IT COUNTS AS A REGIONAL CLUSTER
+  location = var.cluster_location
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
@@ -20,7 +20,7 @@ resource "google_container_node_pool" "silvester_nodepool_ingress" {
   name     = "silvester-nodepool-ingress"
   cluster  = google_container_cluster.silvester_cluster.name
   initial_node_count = 1
-  location = "europe-west1-b" 
+  location = var.cluster_location
 
   autoscaling {
     min_node_count = 1
@@ -49,7 +49,7 @@ resource "google_container_node_pool" "silvester_nodepool_apps" {
   name     = "silvester-nodepool-apps"
   cluster  = google_container_cluster.silvester_cluster.name
   initial_node_count = 1
-  location = "europe-west1-b" 
+  location = var.cluster_location
 
   autoscaling {
     min_node_count = 1
@@ -66,26 +66,3 @@ resource "google_container_node_pool" "silvester_nodepool_apps" {
     preemptible  = true 
   }
 }
-
-#SETUP KUBECTL
-data "google_client_config" "provider" {}
-
-provider "kubernetes" {
-  host  = "https://${google_container_cluster.silvester_cluster.endpoint}"
-  token = data.google_client_config.provider.access_token
-  cluster_ca_certificate = base64decode(
-    google_container_cluster.silvester_cluster.master_auth[0].cluster_ca_certificate,
-  )
-}
-
-#INGRESS CONTROLLER
-resource "kubernetes_namespace" "ingress_nginx" {
-  metadata {
-    name = "ingress-nginx"
-  }
-}
-
-resource "kubectl_manifest" "nginx_ingress_controller" {
-  yaml_body = file("${path.module}/templates/nginx-ingress-controller/deployment.yaml")  
-}
-
