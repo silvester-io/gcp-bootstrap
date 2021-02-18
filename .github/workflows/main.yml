@@ -41,12 +41,19 @@ jobs:
       run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_ingress europe-west1-b/silvester-cluster/silvester-nodepool-ingress 
       continue-on-error: true
 
-    - name: "Import node pool"
+    - name: "Import apps node pool"
       run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps 
       continue-on-error: true
 
     - name: "Run Terraform Apply - Cluster"
       run: terraform -chdir=cluster apply -input=false -auto-approve
+
+    - id: get-credentials
+      uses: google-github-actions/get-gke-credentials@main
+      with:
+        cluster_name: my-cluster
+        location: europe-west1-b
+        credentials: ${{ secrets.GCP_SA_KEY }}
 
     - name: "Run Terraform Apply - Kubernetes"
       run: terraform -chdir=kubernetes apply -input=false -auto-approve
