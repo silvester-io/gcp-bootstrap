@@ -51,7 +51,7 @@ jobs:
     - id: get-credentials
       uses: google-github-actions/get-gke-credentials@main
       with:
-        cluster_name: my-cluster
+        cluster_name: silvester-cluster
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
 
