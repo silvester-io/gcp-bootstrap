@@ -54,6 +54,7 @@ jobs:
       run:
         working-directory: ./kubernetes
 
+    steps:
     - name: "KUBERNETES - Terraform Init"
       run: terraform  init -input=false
 
