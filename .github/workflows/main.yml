@@ -60,4 +60,4 @@ jobs:
     - run: export TF_VAR_kubeconfig_path=$KUBECONFIG
 
     - name: "KUBERNETES - Terraform Apply"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes  "kubeconfig_path=$KUBECONFIG" apply -input=false -auto-approve
+      run: terraform -chdir=kubernetes  apply -input=false -auto-approve
