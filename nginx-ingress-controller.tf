@@ -4,9 +4,6 @@ data "google_client_config" "provider" {}
 
 provider "kubernetes" {
   host  = "https://${google_container_cluster.silvester_cluster.endpoint}"
-  cluster_ca_certificate = base64decode(
-    google_container_cluster.silvester_cluster.master_auth[0].cluster_ca_certificate,
-  )
 }
 
 #INGRESS CONTROLLER
