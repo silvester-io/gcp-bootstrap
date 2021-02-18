@@ -2,10 +2,10 @@ provider "google" {
   project = "silvester-304916"
 }
 
+# CLUSTER
 resource "google_container_cluster" "default" {
-  name               = "silvester-cluster"
-  location           = "europe-west1-b" # MUST BE A SINGLE ZONE, OTHERWISE IT COUNTS AS A REGIONAL CLUSTER
-
+  name = "silvester-cluster"
+  location = "europe-west1-b" # MUST BE A SINGLE ZONE, OTHERWISE IT COUNTS AS A REGIONAL CLUSTER
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
@@ -15,6 +15,7 @@ resource "google_container_cluster" "default" {
 }
 
 
+# INGRESS NODE POOL
 resource "google_container_node_pool" "default" {
   name     = "silvester-nodepool-ingress"
   cluster  = google_container_cluster.default.name
@@ -43,6 +44,7 @@ resource "google_container_node_pool" "default" {
   }
 }
 
+# APPLICATION NODE POOL
 resource "google_container_node_pool" "memory_optimized" {
   name     = "silvester-nodepool"
   cluster  = google_container_cluster.default.name
@@ -65,3 +67,27 @@ resource "google_container_node_pool" "memory_optimized" {
   }
 }
 
+#SETUP KUBECTL
+data "google_client_config" "provider" {}
+
+data "google_container_cluster" "default" {
+  name     = "default"
+  location = "europe-west1-b"
+}
+
+provider "kubernetes" {
+  load_config_file = false
+
+  host  = "https://${data.google_container_cluster.default.endpoint}"
+  token = data.google_client_config.provider.access_token
+  cluster_ca_certificate = base64decode(
+    data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
+  )
+}
+
+#INGRESS CONTROLLER
+resource "kubernetes_namespace" "ingress-nginx" {
+  metadata {
+    name = "ingress-nginx"
+  }
+}
