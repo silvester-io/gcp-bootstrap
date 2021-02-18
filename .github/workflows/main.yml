@@ -58,6 +58,14 @@ jobs:
         cluster_name: silvester-cluster
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
+        
+    - name: "KUBERNETES - Import ingress namespace"
+      run: terraform -chdir=cluster import kubernetes_namespace.ingress_nginx ingress-nginx 
+      continue-on-error: true
+
+      - name: "KUBERNETES - Import ingress service account"
+      run: terraform -chdir=cluster import kubernetes_service_account.ingress_nginx_service_account ingress-nginx/ingress-nginx-service-account 
+      continue-on-error: true
 
     - name: "KUBERNETES - Terraform Apply"
       run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes  apply -input=false -auto-approve 
