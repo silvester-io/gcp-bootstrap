@@ -41,6 +41,10 @@ jobs:
     - name: "Import node pool"
       run: terraform import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps
       continue-on-error: true
+      
+    - name: "Import kubeip service account"
+      run: terraform import kubernetes_namespace.ingress_nginx europe-west1-b/silvester-cluster/ingress-nginx
+      continue-on-error: true
 
     - name: "Run Terraform Apply"
       run: terraform apply -input=false -auto-approve

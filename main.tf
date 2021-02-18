@@ -79,8 +79,13 @@ provider "kubernetes" {
 }
 
 #INGRESS CONTROLLER
-resource "kubernetes_namespace" "ingress-nginx" {
+resource "kubernetes_namespace" "ingress_nginx" {
   metadata {
     name = "ingress-nginx"
   }
 }
+
+resource "kubectl_manifest" "nginx_ingress_controller" {
+  yaml_body = file("${path.module}/templates/nginx-ingress-controller/deployment.yaml")  
+}
+
