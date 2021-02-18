@@ -71,8 +71,6 @@ resource "google_container_node_pool" "silvester_nodepool_apps" {
 data "google_client_config" "provider" {}
 
 provider "kubernetes" {
-  load_config_file = false
-
   host  = "https://${google_container_cluster.silvester_cluster.endpoint}"
   token = data.google_client_config.provider.access_token
   cluster_ca_certificate = base64decode(
