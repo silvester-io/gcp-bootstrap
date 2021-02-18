@@ -44,14 +44,8 @@ jobs:
       run: terraform import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps 
       continue-on-error: true
 
-    - name: "CLUSTER - Terraform Apply"
-      run: terraform  apply -input=false -auto-approve
 
-
-
-    - name: "KUBERNETES - Terraform Init"
-      run: terraform init -input=false
-
+      
     - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main
       with:
