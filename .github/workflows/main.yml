@@ -63,7 +63,7 @@ jobs:
       run: terraform -chdir=cluster import kubernetes_namespace.ingress_nginx ingress-nginx 
       continue-on-error: true
 
-      - name: "KUBERNETES - Import ingress service account"
+    - name: "KUBERNETES - Import ingress service account"
       run: terraform -chdir=cluster import kubernetes_service_account.ingress_nginx_service_account ingress-nginx/ingress-nginx-service-account 
       continue-on-error: true
 
