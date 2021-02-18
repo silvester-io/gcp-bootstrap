@@ -2,6 +2,10 @@
 #SETUP KUBECTL
 data "google_client_config" "provider" {}
 
+provider "kubernetes" {
+ 
+}
+
 #INGRESS CONTROLLER
 resource "kubernetes_namespace" "ingress_nginx" {
   metadata {
