@@ -27,8 +27,11 @@ jobs:
     - name: "Setup Terraform CLI"
       uses: hashicorp/setup-terraform@v1
  
-    - name: "Init terraform"
-      run: terraform init -input=false
+    - name: "Init terraform - Cluster"
+      run: terraform -chdir=cluster init -input=false
+
+    - name: "Init terraform - Kubernetes"
+      run: terraform -chdir=kubernetes init -input=false
  
     - name: "Import container cluster"
       run: terraform -chdir=cluster import google_container_cluster.silvester_cluster europe-west1-b/silvester-cluster 
@@ -45,5 +48,5 @@ jobs:
     - name: "Run Terraform Apply - Cluster"
       run: terraform -chdir=cluster apply -input=false -auto-approve
 
-    - name: "Run Terraform Apply - Ingress"
-      run: terraform -chdir=ingress apply -input=false -auto-approve
+    - name: "Run Terraform Apply - Kubernetes"
+      run: terraform -chdir=kubernetes apply -input=false -auto-approve
