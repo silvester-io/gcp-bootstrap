@@ -9,6 +9,16 @@ jobs:
   terraform:
     name: Linux build on node ${{ matrix.node_version }}
     runs-on: ubuntu-latest
+
+    env:
+        GCP_LOCATION: europe-west1-b
+        GCP_REGION: europe-west1
+        GCP_ZONE: b
+        GKE_CLUSTER_NAME: silvester-cluster
+        PROJECT_ID: $(gcloud config list --format 'value(core.project)')
+        KUBEIP_NODEPOOL: silvester-nodepool-apps
+        KUBEIP_SELF_NODEPOOL: silvester-nodepool-ingress
+
     defaults:
       run:
         working-directory: ./
@@ -16,18 +26,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-
-    - name: Set Environment
-      run: |
-        export GCP_LOCATION=europe-west1-b
-        export GCP_REGION=europe-west1
-        export GCP_ZONE=b
-        export GKE_CLUSTER_NAME=silvester-cluster
-        export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
-        export KUBEIP_NODEPOOL=silvester-nodepool-apps
-        export KUBEIP_SELF_NODEPOOL=silvester-nodepool-ingress
-
-
 
     - name: INSTALL - CLI - GCLoud
       uses: google-github-actions/setup-gcloud@master
