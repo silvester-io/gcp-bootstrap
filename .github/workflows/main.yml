@@ -17,7 +17,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: Set up Cloud SDK
+
+
+    - name: Setup Cloud SDK
       uses: google-github-actions/setup-gcloud@master
       with:
         project_id: silvester-304916
@@ -29,27 +31,27 @@ jobs:
  
 
       
-    - name: "CLUSTER - Terraform Init"
+    - name: "CLUSTER - Terraform - Init"
       run: terraform -chdir=cluster init -input=false
 
-    - name: "CLUSTER - Import cluster"
+    - name: "CLUSTER - Import - Cluster"
       run: terraform -chdir=cluster import google_container_cluster.silvester_cluster europe-west1-b/silvester-cluster 
       continue-on-error: true
 
-    - name: "CLUSTER - Import ingress node pool"
+    - name: "CLUSTER - Import - Ingress Node Pool"
       run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_ingress europe-west1-b/silvester-cluster/silvester-nodepool-ingress 
       continue-on-error: true
 
-    - name: "CLUSTER - Import apps node pool"
+    - name: "CLUSTER - Import - Apps Node Pool"
       run: terraform -chdir=cluster import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps 
       continue-on-error: true
 
-    - name: "CLUSTER - Terraform Apply"
+    - name: "CLUSTER - Terraform - Apply"
       run: terraform -chdir=cluster apply -input=false -auto-approve
 
 
 
-    - name: "KUBERNETES - Terraform Init"
+    - name: "KUBERNETES - Terraform-  Init"
       run: terraform -chdir=kubernetes init -input=false
  
     - name: "KUBERNETES - Set Credentials"
@@ -59,13 +61,25 @@ jobs:
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
         
-    - name: "KUBERNETES - Import ingress namespace"
+    - name: "KUBERNETES - Import - Ingress Namespace"
       run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_namespace.ingress_nginx ingress-nginx 
       continue-on-error: true
 
-    - name: "KUBERNETES - Import ingress service account"
+    - name: "KUBERNETES - Import - Ingress Service Account"
       run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_service_account.ingress_nginx_service_account ingress-nginx/ingress-nginx-service-account 
       continue-on-error: true
 
-    - name: "KUBERNETES - Terraform Apply"
+    - name: "KUBERNETES - Import - Ingress ConfigMap"
+      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_service_account.ingress_nginx_configmap ingress-nginx/ingress-nginx-controller
+      continue-on-error: true
+
+    - name: "KUBERNETES - Import - Ingress ClusterRole"
+      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_cluster_role.ingress_nginx_cluster_role ingress-nginx
+      continue-on-error: true
+
+    - name: "KUBERNETES - Import - Ingress ClusterRoleBinding"
+      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_cluster_role_binding.ingress_nginx_cluster_role_binding ingress-nginx
+      continue-on-error: true
+
+    - name: "KUBERNETES - Terraform - Apply"
       run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes  apply -input=false -auto-approve 
