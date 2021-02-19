@@ -73,10 +73,6 @@ resource "google_compute_firewall" "http_node_port" {
   network = google_compute_network.default.name
 
   allow {
-    protocol = "http"
-  }
-
-  allow {
     protocol = "tcp"
     ports    = ["80"]
   }
@@ -85,11 +81,6 @@ resource "google_compute_firewall" "http_node_port" {
 # HTTPS TRAFFIC
 resource "google_compute_firewall" "https_node_port" {
   name    = "https-node-port"
-  network = google_compute_network.default.name
-
-  allow {
-    protocol = "https"
-  }
 
   allow {
     protocol = "tcp"
