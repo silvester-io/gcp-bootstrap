@@ -36,9 +36,9 @@ resource "kubernetes_config_map" "ingress_nginx_configmap" {
       "app.kubernetes.io/version" = "0.44.0"
       "app.kubernetes.io/component" = "controller"
     }
-    data = {
-
-    }
+  }
+  data = {
+    
   }
 }
 
@@ -53,43 +53,43 @@ resource "kubernetes_cluster_role" "ingress_nginx_cluster_role" {
   }
 
   rule {
-    apiGroups = [""]
+    api_groups = [""]
     resources = ["configmaps", "endpoints", "nodes", "pods", "secrets"]
     verbs = ["list", "watch"]
   }
 
   rule {
-    apiGroups = [""]
+    api_groups = [""]
     resources = ["nodes"]
     verbs = ["get"]
   }
 
   rule {
-    apiGroups = [""]
+    api_groups = [""]
     resources = ["services"]
     verbs = ["get", "list", "watch"]
   }
   
   rule {
-    apiGroups = ["extensions", "networking.k8s.io"]
+    api_groups = ["extensions", "networking.k8s.io"]
     resources = ["ingresses"]
     verbs = ["get", "list", "watch"]
   }
 
   rule {
-    apiGroups = [""]
+    api_groups = [""]
     resources = ["events"]
     verbs = ["create", "patch"]
   }
 
   rule {
-    apiGroups = ["extensions", "networking.k8s.io"]
+    api_groups = ["extensions", "networking.k8s.io"]
     resources = ["ingresses/status"]
-    verbs = "update"
+    verbs = ["update"]
   }
 
   rule {
-    apiGroups = ["networking.k8s.io"]
+    api_groups = ["networking.k8s.io"]
     resources = ["ingressclasses"]
     verbs = ["get", "list", "watch"]
   }
