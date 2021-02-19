@@ -58,11 +58,19 @@ jobs:
       run: terraform import google_container_node_pool.silvester_nodepool_apps $GCP_LOCATION/$GKE_CLUSTER_NAME/silvester-nodepool-apps 
       continue-on-error: true
 
+    - name: "CLUSTER - Terraform - Import - HTTP Traffic"
+      run: terraform import google_compute_firewall.http_node_port http-node-port
+      continue-on-error: true
+
+    - name: "CLUSTER - Terraform - Import - HTTPS Traffic"
+      run: terraform import google_compute_firewall.https_node_port https-node-port
+      continue-on-error: true
+
     - name: "CLUSTER - Terraform - Apply"
       run: terraform apply -input=false -auto-approve
 
 
-
+      
 
     - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main
@@ -77,11 +85,6 @@ jobs:
         helm repo update
         helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx -f ./charts/nginx-ingress-controller/values.yaml --namespace ingress-nginx --kubeconfig $KUBECONFIG
     
-    - name: "KUBERNETES - Open HTTP & TLS Ports"
-      run: |
-        gcloud compute firewall-rules create http-node-port --allow tcp:80
-        gcloud compute firewall-rules create tls-node-port --allow tcp:443
-
     #- name: "KUBERNETES - Install KubeIP"
      # run: |
       # gcloud iam service-accounts create kubeip-service-account --display-name "kubeIP"

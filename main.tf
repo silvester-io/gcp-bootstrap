@@ -66,3 +66,33 @@ resource "google_container_node_pool" "silvester_nodepool_apps" {
     preemptible  = true 
   }
 }
+
+# HTTP TRAFFIC
+resource "google_compute_firewall" "http_node_port" {
+  name    = "http-node-port"
+  network = google_compute_network.default.name
+
+  allow {
+    protocol = "http"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+}
+
+# HTTPS TRAFFIC
+resource "google_compute_firewall" "https_node_port" {
+  name    = "https-node-port"
+  network = google_compute_network.default.name
+
+  allow {
+    protocol = "https"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+}
