@@ -1,0 +1,3 @@
+nodes:
+  self: silvester-nodepool-apps
+  ingress: silvester-nodepool-ingress

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}-config
+  namespace: {{ .Chart.Namespace }}
+data:
+  KUBEIP_LABELKEY: {{ .Chart.Name | quote }}
+  KUBEIP_LABELVALUE: "static-ingress"
+  KUBEIP_SELF_NODEPOOL: {{ .Values.nodes.self | quote }}
+  KUBEIP_NODEPOOL: {{ .Values.nodes.ingress | quote }}
+  KUBEIP_FORCEASSIGNMENT: "true"
+  KUBEIP_ADDITIONALNODEPOOLS: ""
+  KUBEIP_TICKER: "5"
+  KUBEIP_ALLNODEPOOLS: "false"

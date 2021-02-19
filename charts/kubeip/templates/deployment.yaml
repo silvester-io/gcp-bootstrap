@@ -5,23 +5,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kubeip
-  namespace: kube-system
+  name: {{ .Chart.Name }}
+  namespace: {{ .Chart.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kubeip
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: kubeip
+        app: {{ .Chart.Name }}
     spec:
       priorityClassName: system-cluster-critical
       nodeSelector:
-        cloud.google.com/gke-nodepool: silvester-nodepool-apps
+        cloud.google.com/gke-nodepool:  {{ .Values.node.self }}
       containers:
-        - name: "kubeip"
+        - name: {{ .Chart.Name | quote }}
           image: doitintl/kubeip:latest
           imagePullPolicy: Always
           volumeMounts:
@@ -32,42 +32,42 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: "KUBEIP_LABELKEY"
-                  name: "kubeip-config"
+                  name: {{ .Chart.Name }}-config
             - name: "KUBEIP_LABELVALUE"
               valueFrom:
                 configMapKeyRef:
                   key: "KUBEIP_LABELVALUE"
-                  name: "kubeip-config"
+                  name: {{ .Chart.Name }}-config
             - name: "KUBEIP_NODEPOOL"
               valueFrom:
                 configMapKeyRef:
                   key: "KUBEIP_NODEPOOL"
-                  name: "kubeip-config"
+                  name: {{ .Chart.Name }}-config
             - name: "KUBEIP_FORCEASSIGNMENT"
               valueFrom:
                 configMapKeyRef:
                   key: "KUBEIP_FORCEASSIGNMENT"
-                  name: "kubeip-config"
+                  name: {{ .Chart.Name }}-config
             - name: "KUBEIP_ADDITIONALNODEPOOLS"
               valueFrom:
                 configMapKeyRef:
                   key: "KUBEIP_ADDITIONALNODEPOOLS"
-                  name: "kubeip-config"
+                  name: {{ .Chart.Name }}-config
             - name: "KUBEIP_TICKER"
               valueFrom:
                 configMapKeyRef:
                   key: "KUBEIP_TICKER"
-                  name: "kubeip-config"
+                  name: {{ .Chart.Name }}-config
             - name: "KUBEIP_ALLNODEPOOLS"
               valueFrom:
                 configMapKeyRef:
                   key: "KUBEIP_ALLNODEPOOLS"
-                  name: "kubeip-config"
+                  name: {{ .Chart.Name }}-config
 
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/kubeip-key.json
       restartPolicy: Always
-      serviceAccountName: kubeip-serviceaccount
+      serviceAccountName: {{ .Chart.Name }}-serviceaccount
       volumes:
         - name: google-cloud-key
           secret:
