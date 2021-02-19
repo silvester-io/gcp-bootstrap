@@ -19,18 +19,22 @@ jobs:
 
 
 
-    - name: Setup Cloud SDK
+    - name: INSTALL - Cloud SDK
       uses: google-github-actions/setup-gcloud@master
       with:
         project_id: silvester-304916
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
     
-    - name: "Setup Terraform CLI"
+    - name: "INSTALL - Terraform CLI"
       uses: hashicorp/setup-terraform@v1
  
+    - name: INSTALL - Helm CLI
+      uses: azure/setup-helm@v1
 
-      
+
+
+
     - name: "CLUSTER - Terraform - Init"
       run: terraform -chdir=cluster init -input=false
 
@@ -51,35 +55,8 @@ jobs:
 
 
 
-    - name: "KUBERNETES - Terraform-  Init"
-      run: terraform -chdir=kubernetes init -input=false
- 
-    - name: "KUBERNETES - Set Credentials"
-      uses: google-github-actions/get-gke-credentials@main
-      with:
-        cluster_name: silvester-cluster 
-        location: europe-west1-b
-        credentials: ${{ secrets.GCP_SA_KEY }}
-        
-    - name: "KUBERNETES - Import - Ingress Namespace"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_namespace.ingress_nginx ingress-nginx 
-      continue-on-error: true
-
-    - name: "KUBERNETES - Import - Ingress Service Account"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_service_account.ingress_nginx_service_account ingress-nginx/ingress-nginx-service-account 
-      continue-on-error: true
-
-    - name: "KUBERNETES - Import - Ingress ConfigMap"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_service_account.ingress_nginx_configmap ingress-nginx/ingress-nginx-controller
-      continue-on-error: true
-
-    - name: "KUBERNETES - Import - Ingress ClusterRole"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_cluster_role.ingress_nginx_cluster_role ingress-nginx
-      continue-on-error: true
-
-    - name: "KUBERNETES - Import - Ingress ClusterRoleBinding"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes import kubernetes_cluster_role_binding.ingress_nginx_cluster_role_binding ingress-nginx
-      continue-on-error: true
-
-    - name: "KUBERNETES - Terraform - Apply"
-      run: TF_VAR_kubeconfig_path=$KUBECONFIG terraform -chdir=kubernetes  apply -input=false -auto-approve 
+    - name: "KUBERNETES - Install Nginx Ingress Controller"
+      run: |
+        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+        helm repo update
+        helm template ingress-nginx/ingress-nginx -f ./charts/nginx-ingress-controller/values.yaml

@@ -1,0 +1,35 @@
+controller:
+  replicaCount: 1
+  nodeSelector:
+    cloud.google.com/gke-nodepool: silvester-nodepool-ingress
+
+  admissionWebhooks:
+    patch:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: silvester-nodepool-ingress
+      tolerations: 
+      - key: dedicated
+        operator: Equal
+        effect: NoSchedule
+        value: ingress
+
+  extraArgs:
+    "enable-ssl-passthrough": 
+
+  tolerations:
+  - key: dedicated
+    operator: Equal
+    effect: NoSchedule
+    value: ingress
+
+  dnsPolicy: ClusterFirstWithHostNet
+  hostNetwork: true  
+  
+defaultBackend:
+  nodeSelector:  
+    cloud.google.com/gke-nodepool: silvester-nodepool-ingress
+  tolerations:
+  - key: dedicated
+    operator: Equal
+    effect: NoSchedule
+    value: ingress
