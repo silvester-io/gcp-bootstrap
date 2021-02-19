@@ -70,6 +70,7 @@ resource "google_container_node_pool" "silvester_nodepool_apps" {
 # HTTP TRAFFIC
 resource "google_compute_firewall" "http_node_port" {
   name    = "http-node-port"
+  network = "default"
 
   allow {
     protocol = "tcp"
@@ -80,6 +81,7 @@ resource "google_compute_firewall" "http_node_port" {
 # HTTPS TRAFFIC
 resource "google_compute_firewall" "https_node_port" {
   name    = "https-node-port"
+  network = "default"
 
   allow {
     protocol = "tcp"
