@@ -70,7 +70,7 @@ jobs:
         helm repo update
         helm install nginx-ingress ingress-nginx/ingress-nginx -f ./charts/nginx-ingress-controller/values.yaml --namespace ingress-nginx --kubeconfig $KUBECONFIG
     
-    - name: "KUBERNETEs - Open HTTP & TLS Ports"
-      rune: |
+    - name: "KUBERNETES - Open HTTP & TLS Ports"
+      run: |
         gcloud compute firewall-rules create http-node-port --allow tcp:80
         gcloud compute firewall-rules create tls-node-port --allow tcp:443
