@@ -50,43 +50,48 @@ resource "kubernetes_cluster_role" "ingress_nginx_cluster_role" {
       "app.kubernetes.io/instance" = var.ingress_namespace
       "app.kubernetes.io/version" = "0.44.0"
     }
-    rules = [
-      {
-        apiGroups = [""]
-        resources = ["configmaps", "endpoints", "nodes", "pods", "secrets"]
-        verbs = ["list", "watch"]
-      },
-      {
-        apiGroups = [""]
-        resources = ["nodes"]
-        verbs = ["get"]
-      },
-      {
-        apiGroups = [""]
-        resources = ["services"]
-        verbs = ["get", "list", "watch"]
-      },
-      {
-        apiGroups = ["extensions", "networking.k8s.io"]
-        resources = ["ingresses"]
-        verbs = ["get", "list", "watch"]
-      },
-      {
-        apiGroups = [""]
-        resources = ["events"]
-        verbs = ["create", "patch"]
-      },
-      {
-        apiGroups = ["extensions", "networking.k8s.io"]
-        resources = ["ingresses/status"]
-        verbs = "update"
-      },
-      {
-        apiGroups = ["networking.k8s.io"]
-        resources = ["ingressclasses"]
-        verbs = ["get", "list", "watch"]
-      }
-    ]
+  }
+
+  rule {
+    apiGroups = [""]
+    resources = ["configmaps", "endpoints", "nodes", "pods", "secrets"]
+    verbs = ["list", "watch"]
+  }
+
+  rule {
+    apiGroups = [""]
+    resources = ["nodes"]
+    verbs = ["get"]
+  }
+
+  rule {
+    apiGroups = [""]
+    resources = ["services"]
+    verbs = ["get", "list", "watch"]
+  }
+  
+  rule {
+    apiGroups = ["extensions", "networking.k8s.io"]
+    resources = ["ingresses"]
+    verbs = ["get", "list", "watch"]
+  }
+
+  rule {
+    apiGroups = [""]
+    resources = ["events"]
+    verbs = ["create", "patch"]
+  }
+
+  rule {
+    apiGroups = ["extensions", "networking.k8s.io"]
+    resources = ["ingresses/status"]
+    verbs = "update"
+  }
+
+  rule {
+    apiGroups = ["networking.k8s.io"]
+    resources = ["ingressclasses"]
+    verbs = ["get", "list", "watch"]
   }
 }
 
