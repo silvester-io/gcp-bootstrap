@@ -19,9 +19,9 @@ jobs:
 
     - name: Set Environment
       run: |
+        export GCP_LOCATION=europe-west1-b
         export GCP_REGION=europe-west1
         export GCP_ZONE=b
-        export GCP_LOCATION=europe-west1-b
         export GKE_CLUSTER_NAME=silvester-cluster
         export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
         export KUBEIP_NODEPOOL=silvester-nodepool-apps
