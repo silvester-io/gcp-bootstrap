@@ -17,20 +17,28 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
+    - name: Set Environment
+      run: |
+        export GCP_REGION=europe-west1
+        export GCP_ZONE=b
+        export GKE_CLUSTER_NAME=silvester-cluster
+        export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
+        export KUBEIP_NODEPOOL=silvester-nodepool-apps
+        export KUBEIP_SELF_NODEPOOL=silvester-nodepool-ingress
 
 
 
-    - name: INSTALL - GCLoud CLI
+    - name: INSTALL - CLI - GCLoud
       uses: google-github-actions/setup-gcloud@master
       with:
         project_id: silvester-304916
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
     
-    - name: "INSTALL - Terraform CLI"
+    - name: "INSTALL - CLI - Terraform"
       uses: hashicorp/setup-terraform@v1
  
-    - name: INSTALL - Helm CLI
+    - name: INSTALL - CLI - Helm
       uses: azure/setup-helm@v1
 
 
@@ -40,15 +48,15 @@ jobs:
       run: terraform init -input=false
 
     - name: "CLUSTER - Terraform - Import - Cluster"
-      run: terraform import google_container_cluster.silvester_cluster europe-west1-b/silvester-cluster 
+      run: terraform import google_container_cluster.silvester_cluster $GCP_REGION-$GCP_ZONE/$GKE_CLUSTER_NAME
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - Ingress Node Pool"
-      run: terraform import google_container_node_pool.silvester_nodepool_ingress europe-west1-b/silvester-cluster/silvester-nodepool-ingress 
+      run: terraform import google_container_node_pool.silvester_nodepool_ingress $GCP_REGION-$GCP_ZONE/$GKE_CLUSTER_NAME/silvester-nodepool-ingress 
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - Apps Node Pool"
-      run: terraform import google_container_node_pool.silvester_nodepool_apps europe-west1-b/silvester-cluster/silvester-nodepool-apps 
+      run: terraform import google_container_node_pool.silvester_nodepool_apps $GCP_REGION-$GCP_ZONE/$GKE_CLUSTER_NAME/silvester-nodepool-apps 
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
@@ -60,8 +68,8 @@ jobs:
     - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main
       with:
-        cluster_name: silvester-cluster 
-        location: europe-west1-b
+        cluster_name: $GKE_CLUSTER_NAME
+        location: $GCP_REGION-$GCP_ZONE
         credentials: ${{ secrets.GCP_SA_KEY }}
 
     - name: "KUBERNETES - Install Nginx Ingress Controller"
@@ -74,3 +82,9 @@ jobs:
       run: |
         gcloud compute firewall-rules create http-node-port --allow tcp:80
         gcloud compute firewall-rules create tls-node-port --allow tcp:443
+
+    #- name: "KUBERNETES - Install KubeIP"
+     # run: |
+      # gcloud iam service-accounts create kubeip-service-account --display-name "kubeIP"
+      # gcloud iam roles create kubeip --project $PROJECT_ID --file roles.yaml
+      # gcloud projects add-iam-policy-binding $PROJECT_ID --member serviceAccount:kubeip-service-account@$PROJECT_ID.iam.gserviceaccount.com --role projects/$PROJECT_ID/roles/kubeip
