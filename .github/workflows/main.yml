@@ -148,4 +148,4 @@ jobs:
         
     - name: "KUBERNETES - Install Let's Encrypt"
       run: |
-        helm upgrade --install lets-encrypt ./charts/letsencrypt --namespace lets-encrypt
+        helm upgrade --install lets-encrypt ./charts/letsencrypt 
