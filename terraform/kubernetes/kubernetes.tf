@@ -1,5 +1,5 @@
 provider "kubernetes" {
-  config_path = "$KUBECONFIG"
+  config_path = env.KUBECONFIG
 }
 
 # NAMESPACE

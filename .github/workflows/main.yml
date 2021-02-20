@@ -86,7 +86,7 @@ jobs:
       run: terraform -chdir=./terraform/kubernetes init -input=false
 
     - name: "CLUSTER - Terraform - Import - KubeIP Namespace"
-      run: terraform -config_file=$KUBECONFIG -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip
+      run: terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
