@@ -1,3 +1,10 @@
+# NAMESPACE
+resource "kubernetes_namespace" "kubeip_namespace" {
+  metadata {
+    name = var.kubeip_kubernetes_namespace
+  }
+}
+
 # SERVICE ACCOUNT
 resource "google_service_account" "kubeip_service_account" {
   account_id = var.kubeip_google_serviceaccount_name
