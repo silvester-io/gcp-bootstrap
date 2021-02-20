@@ -66,26 +66,6 @@ jobs:
       run: terraform -chdir=./terraform/cluster import google_compute_firewall.https_node_port https-node-port
       continue-on-error: true
 
-    - name: "CLUSTER - Terraform - Import - KubeIP Namespace"
-      run: terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip
-      continue-on-error: true
-
-    - name: "CLUSTER - Terraform - Import - KubeIP Service Account"
-      run: terraform -chdir=./terraform/kubeip import google_service_account.kubeip_service_account "projects/$PROJECT_ID/serviceAccounts/kubeip-service-account@$PROJECT_ID.iam.gserviceaccount.com"
-      continue-on-error: true
-      
-    - name: "CLUSTER - Terraform - Import - KubeIP Role"
-      run: terraform -chdir=./terraform/kubeip import google_project_iam_custom_role.kubeip_role kubeip 
-      continue-on-error: true
-      
-    - name: "CLUSTER - Terraform - Import - KubeIP Role Binding"
-      run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_role_binding "$PROJECT_ID roles/kubeip"
-      continue-on-error: true
-
-    - name: "CLUSTER - Terraform - Import - KubeIP IAM Policy Binding"
-      run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_iam_policy_binding "$PROJECT_ID roles/iam.workloadIdentityUser"
-      continue-on-error: true
-
     - name: "CLUSTER - Terraform - Apply"
       run: terraform -chdir=./terraform/cluster apply -input=false -auto-approve
 
