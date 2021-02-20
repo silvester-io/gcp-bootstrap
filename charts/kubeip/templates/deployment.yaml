@@ -19,7 +19,7 @@ spec:
     spec:
       priorityClassName: system-cluster-critical
       nodeSelector:
-        cloud.google.com/gke-nodepool:  {{ .Values.node.self }}
+        cloud.google.com/gke-nodepool:  {{ .Values.nodes.self }}
       containers:
         - name: {{ .Chart.Name | quote }}
           image: doitintl/kubeip:latest
