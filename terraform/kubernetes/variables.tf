@@ -23,6 +23,11 @@ variable "kubeip_kubernetes_namespace" {
     default = "kubeip"
 }
 
+variable "certmanager_kubernetes_namespace" {
+    type = string
+    default = "cert-manager"
+}
+
 variable "kubeconfig" {
     type = string
 }

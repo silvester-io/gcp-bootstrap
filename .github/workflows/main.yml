@@ -81,12 +81,16 @@ jobs:
         location: ${{ env.GCP_LOCATION }}
         credentials: ${{ secrets.GCP_SA_KEY }}
 
-    # TERRAFORM KUBERNETES
+    # TERRAFORM KUBERNETES NAMESPACES
     - name: "CLUSTER - Terraform - Init"
       run: terraform -chdir=./terraform/kubernetes init -input=false
 
     - name: "CLUSTER - Terraform - Import - KubeIP Namespace"
-      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip
+      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip_namespace
+      continue-on-error: true
+      
+    - name: "CLUSTER - Terraform - Import - CertManager Namespace"
+      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.certmanager_namespace certmanager_namespace
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
@@ -135,3 +139,9 @@ jobs:
     - name: "KUBERNETES - Install KubeIP"    
       run: |
         helm upgrade --install kubeip ./charts/kubeip -f ./charts/kubeip/values.yaml --namespace kubeip --kubeconfig $KUBECONFIG
+
+    - name: "KUBERNETES - Install Cert Manager"
+      run: |
+        helm repo add jetstack https://charts.jetstack.io
+        helm repo update
+        helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.2.0 --set installCRDs=true
