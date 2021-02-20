@@ -89,7 +89,17 @@ jobs:
     - name: "CLUSTER - Terraform - Apply"
       run: terraform -chdir=./terraform/cluster apply -input=false -auto-approve
 
-      
+
+
+
+
+    # INSTALL KUBERNETES APPLICATIONS
+    - name: "KUBERNETES - Set Credentials"
+      uses: google-github-actions/get-gke-credentials@main
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER_NAME }}
+        location: ${{ env.GCP_LOCATION }}
+        credentials: ${{ secrets.GCP_SA_KEY }}
 
     # TERRAFORM KUBERNETES
     - name: "CLUSTER - Terraform - Init"
@@ -131,14 +141,6 @@ jobs:
 
 
       
-    # INSTALL KUBERNETES APPLICATIONS
-    - name: "KUBERNETES - Set Credentials"
-      uses: google-github-actions/get-gke-credentials@main
-      with:
-        cluster_name: ${{ env.GKE_CLUSTER_NAME }}
-        location: ${{ env.GCP_LOCATION }}
-        credentials: ${{ secrets.GCP_SA_KEY }}
-
     - name: "KUBERNETES - Install Nginx Ingress Controller"
       run: |
         helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
