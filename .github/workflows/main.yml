@@ -78,6 +78,10 @@ jobs:
       run: terraform import google_project_iam_binding.kubeip_role_binding "$PROJECT_ID roles/kubeip"
       continue-on-error: true
 
+    - name: "CLUSTER - Terraform - Import - KubeIP IAM Policy Binding"
+      run: terraform import google_project_iam_binding.kubeip_iam_policy_binding "$PROJECT_ID roles/iam.workloadIdentityUser"
+      continue-on-error: true
+
     - name: "CLUSTER - Terraform - Apply"
       run: terraform apply -input=false -auto-approve
 
