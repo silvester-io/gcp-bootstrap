@@ -1,8 +1,14 @@
 
+data "google_compute_default_service_account" "default" {
+
+}
+
+
 # SERVICE ACCOUNT
 resource "google_service_account" "kubeip_service_account" {
   name = "kubeip-service-account"
   display_name = "kubeIP"
+  account_id = data.google_compute_default_service_account.default.email
 }
 
 # CLUSTER ROLE
