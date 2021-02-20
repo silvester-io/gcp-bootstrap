@@ -14,7 +14,7 @@ controller:
         value: ingress
 
   extraArgs:
-    "enable-ssl-passthrough": 
+    "enable-ssl-passthrough": ""
 
   tolerations:
   - key: dedicated
