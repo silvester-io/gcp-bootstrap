@@ -10,4 +10,4 @@ spec:
   bindings:
     - role: roles/iam.workloadIdentityUser
       members:
-        - serviceAccount:[{{ .Values.projectId }}].svc.id.goog[[{{ .Chart.Namespace }}]/[{{ .Chart.Name }}-serviceaccount]]
+        - serviceAccount:[{{ .Values.projectId }}].svc.id.goog[[{{ .Release.Namespace }}]/[{{ .Chart.Name }}-serviceaccount]]

@@ -4,7 +4,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
   name: {{ .Chart.Name }}-config
-  namespace: {{ .Chart.Namespace }}
+  namespace: {{ .Release.Namespace }}
 data:
   KUBEIP_LABELKEY: {{ .Chart.Name | quote }}
   KUBEIP_LABELVALUE: "static-ingress"

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: workload-identity-test
-  namespace: {{ .Chart.Namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   containers:
   - image: google/cloud-sdk:slim
