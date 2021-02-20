@@ -1,14 +1,7 @@
-
-data "google_compute_default_service_account" "default" {
-
-}
-
-
 # SERVICE ACCOUNT
 resource "google_service_account" "kubeip_service_account" {
-  name = "kubeip-service-account"
+  account_id = "kubeip-service-account"
   display_name = "kubeIP"
-  account_id = data.google_compute_default_service_account.default.email
 }
 
 # CLUSTER ROLE
@@ -29,10 +22,4 @@ resource "google_project_iam_binding" "kubeip_role_binding" {
   members = [
     "serviceAccount:kubeip-service-account@${var.project}.iam.gserviceaccount.com",
   ]
-}
-
-# WORKLOAD IDENTITY BINDING
-resource "google_service_account_iam_policy" "kubeip_workload_identity_binding" {
-  service_account_id = "kubeip-service-account"
-  policy_data        = data.google_iam_policy.admin.policy_data
 }
