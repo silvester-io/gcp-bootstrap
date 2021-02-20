@@ -92,6 +92,10 @@ jobs:
     - name: "CLUSTER - Terraform - Import - CertManager Namespace"
       run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.certmanager_namespace cert-manager
       continue-on-error: true
+      
+    - name: "CLUSTER - Terraform - Import - Nginx Ingress Namespace"
+      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.ingress_nginx_namespace ingress-nginx
+      continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
       run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes apply -input=false -auto-approve 

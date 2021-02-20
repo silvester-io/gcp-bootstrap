@@ -28,6 +28,11 @@ variable "certmanager_kubernetes_namespace" {
     default = "cert-manager"
 }
 
+variable "ingress_nginx_kubernetes_namespace" {
+    type = string
+    default = "ingress-nginx"
+}
+
 variable "kubeconfig" {
     type = string
 }
