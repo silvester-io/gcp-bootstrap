@@ -110,7 +110,7 @@ jobs:
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
-      run: terraform -config_file=$KUBECONFIG -chdir=./terraform/kubernetes apply -input=false -auto-approve 
+      run: terraform -chdir=./terraform/kubernetes apply -input=false -auto-approve 
 
 
 
