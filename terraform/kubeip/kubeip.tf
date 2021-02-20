@@ -1,3 +1,8 @@
+provider "google-beta" {
+  project = var.project
+}
+
+
 # SERVICE ACCOUNT
 resource "google_service_account" "kubeip_service_account" {
   account_id = var.kubeip_google_serviceaccount_name
