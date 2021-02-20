@@ -73,7 +73,6 @@ jobs:
     - name: "CLUSTER - Terraform - Import - KubeIP Role"
       run: terraform import google_project_iam_custom_role.kubeip_role kubeip 
       continue-on-error: true
-      continue-on-error: true
       
     - name: "CLUSTER - Terraform - Import - KubeIP Role Binding"
       run: terraform import google_project_iam_binding.kubeip_role_binding "$PROJECT_ID roles/kubeip"
