@@ -42,56 +42,96 @@ jobs:
 
 
 
-
+    # TERRAFORM CLUSTER
     - name: "CLUSTER - Terraform - Init"
-      run: terraform init -input=false
+      run: terraform -chdir=./terraform/cluster init -input=false
 
     - name: "CLUSTER - Terraform - Import - Cluster"
-      run: terraform import google_container_cluster.silvester_cluster $GCP_LOCATION/$GKE_CLUSTER_NAME
+      run: terraform -chdir=./terraform/cluster import google_container_cluster.silvester_cluster $GCP_LOCATION/$GKE_CLUSTER_NAME
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - Ingress Node Pool"
-      run: terraform import google_container_node_pool.silvester_nodepool_ingress $GCP_LOCATION/$GKE_CLUSTER_NAME/silvester-nodepool-ingress 
+      run: terraform -chdir=./terraform/cluster import google_container_node_pool.silvester_nodepool_ingress $GCP_LOCATION/$GKE_CLUSTER_NAME/silvester-nodepool-ingress 
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - Apps Node Pool"
-      run: terraform import google_container_node_pool.silvester_nodepool_apps $GCP_LOCATION/$GKE_CLUSTER_NAME/silvester-nodepool-apps 
+      run: terraform -chdir=./terraform/cluster import google_container_node_pool.silvester_nodepool_apps $GCP_LOCATION/$GKE_CLUSTER_NAME/silvester-nodepool-apps 
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - HTTP Traffic"
-      run: terraform import google_compute_firewall.http_node_port http-node-port
+      run: terraform -chdir=./terraform/cluster import google_compute_firewall.http_node_port http-node-port
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - HTTPS Traffic"
-      run: terraform import google_compute_firewall.https_node_port https-node-port
+      run: terraform -chdir=./terraform/cluster import google_compute_firewall.https_node_port https-node-port
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - KubeIP Namespace"
-      run: terraform import kubernetes_namespace.kubeip_namespace kubeip
+      run: terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - KubeIP Service Account"
-      run: terraform import google_service_account.kubeip_service_account "projects/$PROJECT_ID/serviceAccounts/kubeip-service-account@$PROJECT_ID.iam.gserviceaccount.com"
+      run: terraform -chdir=./terraform/kubeip import google_service_account.kubeip_service_account "projects/$PROJECT_ID/serviceAccounts/kubeip-service-account@$PROJECT_ID.iam.gserviceaccount.com"
       continue-on-error: true
       
     - name: "CLUSTER - Terraform - Import - KubeIP Role"
-      run: terraform import google_project_iam_custom_role.kubeip_role kubeip 
+      run: terraform -chdir=./terraform/kubeip import google_project_iam_custom_role.kubeip_role kubeip 
       continue-on-error: true
       
     - name: "CLUSTER - Terraform - Import - KubeIP Role Binding"
-      run: terraform import google_project_iam_binding.kubeip_role_binding "$PROJECT_ID roles/kubeip"
+      run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_role_binding "$PROJECT_ID roles/kubeip"
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - KubeIP IAM Policy Binding"
-      run: terraform import google_project_iam_binding.kubeip_iam_policy_binding "$PROJECT_ID roles/iam.workloadIdentityUser"
+      run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_iam_policy_binding "$PROJECT_ID roles/iam.workloadIdentityUser"
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
-      run: terraform apply -input=false -auto-approve
-
+      run: terraform -chdir=./terraform/cluster apply -input=false -auto-approve
 
       
 
+    # TERRAFORM KUBERNETES
+    - name: "CLUSTER - Terraform - Init"
+      run: terraform -chdir=./terraform/kubernetes init -input=false
+
+    - name: "CLUSTER - Terraform - Import - KubeIP Namespace"
+      run: terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip
+      continue-on-error: true
+
+    - name: "CLUSTER - Terraform - Apply"
+      run: terraform -chdir=./terraform/kubernetes apply -input=false -auto-approve
+
+
+
+    # TERRAFORM KUBEIP
+    - name: "CLUSTER - Terraform - Init"
+      run: terraform -chdir=./terraform/kubeip init -input=false
+
+    - name: "CLUSTER - Terraform - Import - KubeIP Service Account"
+      run: terraform -chdir=./terraform/kubeip import google_service_account.kubeip_service_account "projects/$PROJECT_ID/serviceAccounts/kubeip-service-account@$PROJECT_ID.iam.gserviceaccount.com"
+      continue-on-error: true
+      
+    - name: "CLUSTER - Terraform - Import - KubeIP Role"
+      run: terraform -chdir=./terraform/kubeip import google_project_iam_custom_role.kubeip_role kubeip 
+      continue-on-error: true
+      
+    - name: "CLUSTER - Terraform - Import - KubeIP Role Binding"
+      run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_role_binding "$PROJECT_ID roles/kubeip"
+      continue-on-error: true
+
+    - name: "CLUSTER - Terraform - Import - KubeIP IAM Policy Binding"
+      run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_iam_policy_binding "$PROJECT_ID roles/iam.workloadIdentityUser"
+      continue-on-error: true
+
+    - name: "CLUSTER - Terraform - Apply"
+      run: terraform -chdir=./terraform/kubeip apply -input=false -auto-approve
+
+
+
+
+      
+    # INSTALL KUBERNETES APPLICATIONS
     - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main
       with:
