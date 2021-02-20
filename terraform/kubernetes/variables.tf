@@ -22,3 +22,7 @@ variable "kubeip_kubernetes_namespace" {
     type = string
     default = "kubeip"
 }
+
+variable "kubeconfig" {
+    type = string
+}
