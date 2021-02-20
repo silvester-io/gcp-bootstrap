@@ -145,3 +145,7 @@ jobs:
         helm repo add jetstack https://charts.jetstack.io
         helm repo update
         helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.2.0 --set installCRDs=true
+        
+    - name: "KUBERNETES - Install Let's Encrypt"
+      run: |
+        helm upgrade --install lets-encrypt ./charts/letsencrypt --namespace lets-encrypt
