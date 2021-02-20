@@ -1,8 +1,3 @@
-provider "google-beta" {
-  project = var.project
-}
-
-
 # SERVICE ACCOUNT
 resource "google_service_account" "kubeip_service_account" {
   account_id = var.kubeip_google_serviceaccount_name
@@ -41,6 +36,7 @@ resource "google_project_iam_binding" "kubeip_iam_policy_binding" {
 
 # IP Addresses
 resource "google_compute_address" "kubeip_address_1" {
+  provider = google-beta
   name = "kubeip-ip-1"
   region = var.cluster_region
   project = var.project
