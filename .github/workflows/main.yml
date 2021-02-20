@@ -15,7 +15,7 @@ jobs:
         GCP_REGION: europe-west1
         GCP_ZONE: b
         GKE_CLUSTER_NAME: silvester-cluster
-        PROJECT_ID: $(gcloud config list --format 'value(core.project)')
+        PROJECT_ID: silvester-304916
         KUBEIP_NODEPOOL: silvester-nodepool-apps
         KUBEIP_SELF_NODEPOOL: silvester-nodepool-ingress
 
