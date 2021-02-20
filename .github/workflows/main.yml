@@ -86,11 +86,11 @@ jobs:
       run: terraform -chdir=./terraform/kubernetes init -input=false
 
     - name: "CLUSTER - Terraform - Import - KubeIP Namespace"
-      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip_namespace
+      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip
       continue-on-error: true
       
     - name: "CLUSTER - Terraform - Import - CertManager Namespace"
-      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.certmanager_namespace certmanager_namespace
+      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.certmanager_namespace cert-manager
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
