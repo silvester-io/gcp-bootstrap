@@ -66,6 +66,19 @@ jobs:
       run: terraform import google_compute_firewall.https_node_port https-node-port
       continue-on-error: true
 
+    - name: "CLUSTER - Terraform - Import - KubeIP Service Account"
+      run: terraform import google_service_account.kubeip_service_account kubeip-service-account 
+      continue-on-error: true
+      
+    - name: "CLUSTER - Terraform - Import - KubeIP Role"
+      run: terraform import google_project_iam_custom_role.kubeip_role kubeip 
+      continue-on-error: true
+      continue-on-error: true
+      
+    - name: "CLUSTER - Terraform - Import - KubeIP Role Binding"
+      run: terraform import google_project_iam_binding.kubeip_role_binding "$PROJECT_ID roles/kubeip"
+      continue-on-error: true
+
     - name: "CLUSTER - Terraform - Apply"
       run: terraform apply -input=false -auto-approve
 
@@ -85,8 +98,6 @@ jobs:
         helm repo update
         helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx -f ./charts/nginx-ingress-controller/values.yaml --namespace ingress-nginx --kubeconfig $KUBECONFIG
     
-    #- name: "KUBERNETES - Install KubeIP"
-     # run: |
-      # gcloud iam service-accounts create kubeip-service-account --display-name "kubeIP"
-      # gcloud iam roles create kubeip --project $PROJECT_ID --file roles.yaml
-      # gcloud projects add-iam-policy-binding $PROJECT_ID --member serviceAccount:kubeip-service-account@$PROJECT_ID.iam.gserviceaccount.com --role projects/$PROJECT_ID/roles/kubeip
+    - name: "KUBERNETES - Install KubeIP"    
+      run: |
+        helm upgrade --install kubeip ./charts/kubeip -f ./charts/kubeip/values.yaml --namespace kubeip --kubeconfig $KUBECONFIG

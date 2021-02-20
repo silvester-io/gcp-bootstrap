@@ -1,3 +1,6 @@
 nodes:
   self: silvester-nodepool-apps
   ingress: silvester-nodepool-ingress
+
+gsaServiceAccount: kubeip-service-account
+projectId: silvester-304916

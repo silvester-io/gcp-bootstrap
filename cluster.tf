@@ -11,7 +11,10 @@ resource "google_container_cluster" "silvester_cluster" {
   # separately managed node pools. So we create the smallest possible default
   # node pool and immediately delete it.
   remove_default_node_pool = true
-  initial_node_count       = 1
+  initial_node_count = 1
+  workload_identity_config {
+    identity_namespace = "${data.google_project.project.project_id}.svc.id.goog"
+  }
 }
 
 
