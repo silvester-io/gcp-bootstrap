@@ -33,3 +33,15 @@ resource "google_project_iam_binding" "kubeip_iam_policy_binding" {
     "serviceAccount:${var.project}.svc.id.goog[${var.kubeip_kubernetes_namespace}/${var.kubeip_kubernetes_serviceaccount_name}]",
   ]
 }
+
+# IP Addresses
+resource "google_compute_address" "kubeip_address_1" {
+  name = "kubeip-ip-1"
+  region = var.cluster_region
+  project = var.project
+  network_tier = "STANDARD"
+  
+  labels = {
+    "kubeip" = var.cluster_name
+  }
+}

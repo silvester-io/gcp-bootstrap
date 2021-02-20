@@ -94,6 +94,7 @@ jobs:
 
 
 
+
     # TERRAFORM KUBEIP
     - name: "CLUSTER - Terraform - Init"
       run: terraform -chdir=./terraform/kubeip init -input=false
@@ -112,6 +113,10 @@ jobs:
 
     - name: "CLUSTER - Terraform - Import - KubeIP IAM Policy Binding"
       run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_iam_policy_binding "$PROJECT_ID roles/iam.workloadIdentityUser"
+      continue-on-error: true
+
+    - name: "CLUSTER - Terraform - Import - KubeIP Address"
+      run: terraform -chdir=./terraform/kubeip import google_compute_address.kubeip_address_1 "projects/$PROJECT_ID/regions/$GCP_REGION/addresses/kubeip-ip-1"
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
