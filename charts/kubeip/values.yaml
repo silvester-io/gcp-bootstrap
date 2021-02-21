@@ -3,6 +3,6 @@ nodes:
   ingress: silvester-nodepool-ingress
 
 
-gsaServiceAccount: kubeip-service-account
+gsaServiceAccount: kubeip-serviceaccount
 projectId: silvester-304916
 clusterName: silvester-cluster
