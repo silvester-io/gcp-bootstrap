@@ -7,7 +7,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   KUBEIP_LABELKEY: {{ .Chart.Name | quote }}
-  KUBEIP_LABELVALUE: "static-ingress"
+  KUBEIP_LABELVALUE: {{ .Values.clusterName | quote }}
   KUBEIP_SELF_NODEPOOL: {{ .Values.nodes.self | quote }}
   KUBEIP_NODEPOOL: {{ .Values.nodes.ingress | quote }}
   KUBEIP_FORCEASSIGNMENT: "true"
