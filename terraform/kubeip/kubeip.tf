@@ -42,7 +42,7 @@ resource "google_compute_address" "kubeip_address_1" {
   project = var.project
   network_tier = "STANDARD"
   
-  labels = {
+  labels = { 
     "kubeip" = var.cluster_name
   }
 }
