@@ -120,7 +120,7 @@ jobs:
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - KubeIP IAM Policy Binding"
-      run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_iam_policy_binding "$PROJECT_ID roles/iam.workloadIdentityUser"
+      run: terraform -chdir=./terraform/kubeip import google_service_account_iam_binding.kubeip_iam_policy_binding "$PROJECT_ID roles/iam.workloadIdentityUser"
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - KubeIP Address"
