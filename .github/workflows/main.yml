@@ -96,6 +96,10 @@ jobs:
     - name: "CLUSTER - Terraform - Import - Nginx Ingress Namespace"
       run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.ingress_nginx_namespace ingress-nginx
       continue-on-error: true
+      
+    - name: "CLUSTER - Terraform - Import - Argo CD Namespace"
+      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.argocd_namespace argocd
+      continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
       run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes apply -input=false -auto-approve 
@@ -152,4 +156,10 @@ jobs:
         
     - name: "KUBERNETES - Install Let's Encrypt"
       run: |
-        helm upgrade --install letsencrypt ./charts/letsencrypt 
+        helm upgrade --install letsencrypt ./charts/letsencrypt         
+
+    - name: "KUBERNETES - Install Argo CD"
+      run: |
+        helm repo add argo https://argoproj.github.io/argo-helm
+        helm repo update
+        helm upgrade --install argocd argo/argo-cd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG

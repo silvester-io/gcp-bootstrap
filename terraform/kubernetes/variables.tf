@@ -18,21 +18,6 @@ variable "kubeip_kubernetes_serviceaccount_name" {
     default = "kubeip-serviceaccount"
 }
 
-variable "kubeip_kubernetes_namespace" {
-    type = string
-    default = "kubeip"
-}
-
-variable "certmanager_kubernetes_namespace" {
-    type = string
-    default = "cert-manager"
-}
-
-variable "ingress_nginx_kubernetes_namespace" {
-    type = string
-    default = "ingress-nginx"
-}
-
 variable "kubeconfig" {
     type = string
 }

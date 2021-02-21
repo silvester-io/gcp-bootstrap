@@ -5,20 +5,27 @@ provider "kubernetes" {
 # NGINX INGRESS NAMESPACE
 resource "kubernetes_namespace" "ingress_nginx_namespace" {
   metadata {
-    name = var.ingress_nginx_kubernetes_namespace
+    name = "ingress-nginx"
   }
 }
 
 # KUBE IP NAMESPACE
 resource "kubernetes_namespace" "kubeip_namespace" {
   metadata {
-    name = var.kubeip_kubernetes_namespace
+    name = "kubeip"
   }
 }
 
 # CERT MANAGER NAMESPACE
 resource "kubernetes_namespace" "certmanager_namespace" {
   metadata {
-    name = var.certmanager_kubernetes_namespace
+    name = "cert-manager"
+  }
+}
+
+# ARGO CD NAMESPACE
+resource "kubernetes_namespace" "argocd_namespace" {
+  metadata {
+    name = "argocd"
   }
 }
