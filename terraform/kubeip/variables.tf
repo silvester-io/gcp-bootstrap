@@ -30,5 +30,5 @@ variable "kubeip_kubernetes_serviceaccount_name" {
 
 variable "kubeip_kubernetes_namespace" {
     type = string
-    default = "kubeip"
+    default = "kube-system"
 }
