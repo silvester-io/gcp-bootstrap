@@ -12,6 +12,7 @@ resource "google_container_cluster" "silvester_cluster" {
   # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count = 1
+
   workload_identity_config {
     identity_namespace = "${var.project}.svc.id.goog"
   }
@@ -36,6 +37,9 @@ resource "google_container_node_pool" "silvester_nodepool_ingress" {
   }
 
   node_config {
+    workload_metadata_config {
+      node_metadata = "GKE_METADATA_SERVER"
+    }
     machine_type = "e2-micro" 
     preemptible  = true 
     disk_size_gb = 10
@@ -65,6 +69,9 @@ resource "google_container_node_pool" "silvester_nodepool_apps" {
   }
 
   node_config {
+    workload_metadata_config {
+      node_metadata = "GKE_METADATA_SERVER"
+    }
     machine_type = "n2d-highmem-4" 
     preemptible  = true 
   }
