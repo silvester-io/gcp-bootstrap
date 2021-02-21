@@ -75,7 +75,7 @@ jobs:
 
     # INSTALL KUBERNETES APPLICATIONS
     - name: "KUBERNETES - Set Credentials"
-      uses: google-github-actions/get-gke-credentials@main
+      uses: google-github-actions/get-gke-credentials@main 
       with:
         cluster_name: ${{ env.GKE_CLUSTER_NAME }}
         location: ${{ env.GCP_LOCATION }}
