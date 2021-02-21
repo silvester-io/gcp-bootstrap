@@ -20,7 +20,7 @@ variable "cluster_region" {
 
 variable "kubeip_google_serviceaccount_name" {
     type = string
-    default = "kubeip-service-account"
+    default = "kubeip-serviceaccount"
 }
 
 variable "kubeip_kubernetes_serviceaccount_name" {

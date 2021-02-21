@@ -108,7 +108,7 @@ jobs:
       run: terraform -chdir=./terraform/kubeip init -input=false
 
     - name: "CLUSTER - Terraform - Import - KubeIP Service Account"
-      run: terraform -chdir=./terraform/kubeip import google_service_account.kubeip_service_account "projects/$PROJECT_ID/serviceAccounts/kubeip-service-account@$PROJECT_ID.iam.gserviceaccount.com"
+      run: terraform -chdir=./terraform/kubeip import google_service_account.kubeip_service_account "projects/$PROJECT_ID/serviceAccounts/kubeip-serviceaccount@$PROJECT_ID.iam.gserviceaccount.com"
       continue-on-error: true
       
     - name: "CLUSTER - Terraform - Import - KubeIP Role"
@@ -159,3 +159,4 @@ jobs:
         helm repo add argo https://argoproj.github.io/argo-helm
         helm repo update
         helm upgrade --install argocd argo/argo-cd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG
+     
