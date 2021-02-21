@@ -26,7 +26,7 @@ resource "google_project_iam_binding" "kubeip_role_binding" {
 
 # IAM Policy Binding
 resource "google_service_account_iam_binding" "kubeip_iam_policy_binding" {
-  service_account_id = var.kubeip_google_serviceaccount_name
+  service_account_id = "${var.kubeip_google_serviceaccount_name}@${var.project}.iam.gserviceaccount.com"
   role    = "roles/iam.workloadIdentityUser"
 
   members = [
