@@ -9,13 +9,6 @@ resource "kubernetes_namespace" "ingress_nginx_namespace" {
   }
 }
 
-# KUBE IP NAMESPACE
-resource "kubernetes_namespace" "kubeip_namespace" {
-  metadata {
-    name = "kubeip"
-  }
-}
-
 # CERT MANAGER NAMESPACE
 resource "kubernetes_namespace" "certmanager_namespace" {
   metadata {

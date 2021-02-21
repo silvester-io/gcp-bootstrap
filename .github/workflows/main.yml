@@ -85,10 +85,6 @@ jobs:
     - name: "CLUSTER - Terraform - Init"
       run: terraform -chdir=./terraform/kubernetes init -input=false
 
-    - name: "CLUSTER - Terraform - Import - KubeIP Namespace"
-      run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.kubeip_namespace kubeip
-      continue-on-error: true
-      
     - name: "CLUSTER - Terraform - Import - CertManager Namespace"
       run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.certmanager_namespace cert-manager
       continue-on-error: true
@@ -146,7 +142,7 @@ jobs:
     
     - name: "KUBERNETES - Install KubeIP"    
       run: |
-        helm upgrade --install kubeip ./charts/kubeip -f ./charts/kubeip/values.yaml --namespace kubeip --kubeconfig $KUBECONFIG
+        helm upgrade --install kubeip ./charts/kubeip -f ./charts/kubeip/values.yaml --namespace kube-system --kubeconfig $KUBECONFIG
 
     - name: "KUBERNETES - Install Cert Manager"
       run: |
