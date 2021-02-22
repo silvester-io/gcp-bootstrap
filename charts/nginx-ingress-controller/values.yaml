@@ -1,4 +1,5 @@
 controller:
+  kind: DaemonSet
   replicaCount: 1
   nodeSelector:
     cloud.google.com/gke-nodepool: silvester-nodepool-ingress

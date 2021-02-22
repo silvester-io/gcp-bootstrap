@@ -41,7 +41,7 @@ resource "google_container_node_pool" "silvester_nodepool_ingress" {
       node_metadata = "GKE_METADATA_SERVER"
     }
     machine_type = "e2-micro" 
-    preemptible  = true 
+    preemptible  = false 
     disk_size_gb = 10
     taint = [ {
       effect = "NO_SCHEDULE"
@@ -72,6 +72,7 @@ resource "google_container_node_pool" "silvester_nodepool_apps" {
     workload_metadata_config {
       node_metadata = "GKE_METADATA_SERVER"
     }
+    disk_size_gb = 30
     machine_type = "n2d-highmem-4" 
     preemptible  = true 
   }
