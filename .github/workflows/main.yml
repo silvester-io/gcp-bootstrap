@@ -37,7 +37,7 @@ jobs:
     - name: "INSTALL - CLI - Terraform"
       uses: hashicorp/setup-terraform@v1
  
-    - name: INSTALL - CLI - Helm
+    - name: INSTALL - CLI - Helm 
       uses: azure/setup-helm@v1
 
 
