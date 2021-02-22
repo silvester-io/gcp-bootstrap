@@ -27,6 +27,9 @@ controller:
   hostNetwork: true  
   reportNodeInternalIp: true
   
+  service:
+    enabled: false
+    
 defaultBackend:
   nodeSelector:  
     cloud.google.com/gke-nodepool: silvester-nodepool-ingress
