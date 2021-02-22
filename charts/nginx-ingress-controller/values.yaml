@@ -1,4 +1,5 @@
 controller:
+  kind: DaemonSet
   replicaCount: 1
   nodeSelector:
     cloud.google.com/gke-nodepool: silvester-nodepool-ingress
@@ -21,6 +22,10 @@ controller:
     operator: Equal
     effect: NoSchedule
     value: ingress
+
+  dnsPolicy: ClusterFirstWithHostNet
+  hostNetwork: true  
+  reportNodeInternalIp: true
   
 defaultBackend:
   nodeSelector:  
