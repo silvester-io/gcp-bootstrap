@@ -17,12 +17,10 @@ resource "google_project_iam_custom_role" "kubeip_role" {
 
 # CLUSTER ROLE BINDING V
 resource "google_project_iam_member" "kubeip_role_binding" {
-  project = var.project
   role    = "projects/${var.project}/roles/kubeip"
-
-  members = [
-    "serviceAccount:${var.kubeip_google_serviceaccount_name}@${var.project}.iam.gserviceaccount.com",
-  ]
+  project = var.project
+  member = "serviceAccount:${var.kubeip_google_serviceaccount_name}@${var.project}.iam.gserviceaccount.com"
+  depends_on = [ google_service_account.kubeip_service_account ]
 }
 
 # IAM Policy Binding V
