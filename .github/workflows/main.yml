@@ -17,7 +17,6 @@ jobs:
         GKE_CLUSTER_NAME: silvester-cluster
         PROJECT_ID: silvester-304916
         KUBEIP_NODEPOOL: silvester-nodepool-apps
-        KUBEIP_SELF_NODEPOOL: silvester-nodepool-ingress
 
     defaults:
       run:
@@ -116,7 +115,7 @@ jobs:
       continue-on-error: true
       
     - name: "CLUSTER - Terraform - Import - KubeIP Role Binding"
-      run: terraform -chdir=./terraform/kubeip import google_project_iam_binding.kubeip_role_binding "$PROJECT_ID roles/kubeip"
+      run: terraform -chdir=./terraform/kubeip import google_project_iam_member.kubeip_role_binding "$PROJECT_ID roles/kubeip"
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - KubeIP IAM Policy Binding"

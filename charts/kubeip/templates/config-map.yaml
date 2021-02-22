@@ -8,7 +8,6 @@ metadata:
 data:
   KUBEIP_LABELKEY: {{ .Chart.Name | quote }}
   KUBEIP_LABELVALUE: {{ .Values.clusterName | quote }}
-  KUBEIP_SELF_NODEPOOL: {{ .Values.nodes.self | quote }}
   KUBEIP_NODEPOOL: {{ .Values.nodes.ingress | quote }}
   KUBEIP_FORCEASSIGNMENT: "true"
   KUBEIP_ADDITIONALNODEPOOLS: ""

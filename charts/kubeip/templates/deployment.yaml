@@ -62,3 +62,4 @@ spec:
                   name: {{ .Chart.Name }}-config
       restartPolicy: Always
       serviceAccountName: {{ .Chart.Name }}-serviceaccount
+      automountServiceAccountToken: true
