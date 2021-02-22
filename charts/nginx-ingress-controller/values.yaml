@@ -1,5 +1,4 @@
 controller:
-  kind: DaemonSet
   replicaCount: 1
   nodeSelector:
     cloud.google.com/gke-nodepool: silvester-nodepool-ingress
@@ -13,23 +12,28 @@ controller:
         operator: Equal
         effect: NoSchedule
         value: ingress
+      - key: node.kubernetes.io/unreachable
+        operator: Equal
+        effect: NoSchedule
+
 
   extraArgs:
     "enable-ssl-passthrough": "true"
-
+  
   tolerations:
   - key: dedicated
     operator: Equal
     effect: NoSchedule
     value: ingress
+  - key: node.kubernetes.io/unreachable
+    operator: Equal
+    effect: NoSchedule
 
+  terminationGracePeriodSeconds: 30
   dnsPolicy: ClusterFirstWithHostNet
   hostNetwork: true  
   reportNodeInternalIp: true
-  
-  service:
-    enabled: false
-    
+
 defaultBackend:
   nodeSelector:  
     cloud.google.com/gke-nodepool: silvester-nodepool-ingress
