@@ -139,6 +139,8 @@ jobs:
         helm repo update
         helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -f ./charts/nginx-ingress-controller/values.yaml --namespace ingress-nginx --kubeconfig $KUBECONFIG
     
+  # Installing KubeIp manually post-facto for now until it works..
+
   #  - name: "KUBERNETES - Install KubeIP"    
   #    run: |
   #      helm upgrade --install kubeip ./charts/kubeip -f ./charts/kubeip/values.yaml --namespace kube-system --kubeconfig $KUBECONFIG
