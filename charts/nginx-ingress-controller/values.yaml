@@ -21,9 +21,6 @@ controller:
     operator: Equal
     effect: NoSchedule
     value: ingress
-
-  dnsPolicy: ClusterFirstWithHostNet
-  hostNetwork: true  
   
 defaultBackend:
   nodeSelector:  

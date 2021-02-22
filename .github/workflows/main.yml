@@ -152,7 +152,7 @@ jobs:
         
     - name: "KUBERNETES - Install Let's Encrypt"
       run: |
-        helm upgrade --install letsencrypt ./charts/letsencrypt         
+        helm upgrade --install letsencrypt ./charts/letsencrypt --kubeconfig $KUBECONFIG      
 
     - name: "KUBERNETES - Install Argo CD"
       run: |
