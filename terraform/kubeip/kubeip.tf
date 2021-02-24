@@ -1,6 +1,6 @@
 # SERVICE ACCOUNT
 resource "google_service_account" "kubeip_service_account" {
-  account_id = var.kubeip_google_serviceaccount_name
+  account_id = var.google_serviceaccount_name
   display_name = "kubeIP"
   project = var.project
 }
@@ -19,7 +19,7 @@ resource "google_project_iam_custom_role" "kubeip_role" {
 resource "google_project_iam_member" "kubeip_role_binding" {
   role    = "projects/${var.project}/roles/kubeip"
   project = var.project
-  member = "serviceAccount:${var.kubeip_google_serviceaccount_name}@${var.project}.iam.gserviceaccount.com"
+  member = "serviceAccount:${var.google_serviceaccount_name}@${var.project}.iam.gserviceaccount.com"
   depends_on = [ google_service_account.kubeip_service_account ]
 }
 
@@ -29,7 +29,7 @@ resource "google_service_account_iam_binding" "kubeip_iam_policy_binding" {
   role    = "roles/iam.workloadIdentityUser"
 
   members = [
-    "serviceAccount:${var.project}.svc.id.goog[${var.kubeip_kubernetes_namespace}/${var.kubeip_kubernetes_serviceaccount_name}]",
+    "serviceAccount:${var.project}.svc.id.goog[${var.kubernetes_namespace}/${var.kubernetes_serviceaccount_name}]",
   ]
 }
 

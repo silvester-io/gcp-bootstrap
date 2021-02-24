@@ -60,4 +60,8 @@ module "kubeip" {
 
     google_serviceaccount_name = var.kubeip_google_serviceaccount_name
     kubernetes_serviceaccount_name = var.kubeip_kubernetes_serviceaccount_name
+    kubernetes_namespace = var.kubeip_kubernetes_namespace
+    cluster_region = var.cluster_region
+    cluster_name = var.cluster_name
+    project = var.project
 }
