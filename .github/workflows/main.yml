@@ -54,7 +54,7 @@ jobs:
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Import - Network"
-      run: terraform -chdir=./terraform/cluster import module.gcp_network.google_compute_network.network silvester-network-1
+      run: terraform -chdir=./terraform/cluster import google_compute_network.network silvester-network-1
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
