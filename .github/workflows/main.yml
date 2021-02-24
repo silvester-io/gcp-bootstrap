@@ -53,8 +53,8 @@ jobs:
       run: terraform -chdir=./terraform/cluster import module.gcp_network.google_compute_firewall.https_node_port https-node-port
       continue-on-error: true
 
-    - name: "CLUSTER - Terraform - Import - HTTPS Traffic"
-      run: terraform -chdir=./terraform/cluster import module.gcp_network.google_compute_network.silvester-network-1 silvester-network-1
+    - name: "CLUSTER - Terraform - Import - Network"
+      run: terraform -chdir=./terraform/cluster import module.gcp_network.google_compute_network.network silvester-network-1
       continue-on-error: true
 
     - name: "CLUSTER - Terraform - Apply"
