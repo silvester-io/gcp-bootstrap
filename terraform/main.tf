@@ -19,7 +19,7 @@ module "cluster" {
     cluster_name = var.cluster_name
     subnet_name = var.subnet_name
     pods_ip_range_name = var.pods_ip_range_name
-    services_ip_range_name = ver.services_ip_range_name
+    services_ip_range_name = var.services_ip_range_name
 }
 
 resource "kubernetes_namespace" "namespace_ingress_nginx" {
