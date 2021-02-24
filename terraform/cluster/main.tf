@@ -1,7 +1,3 @@
-provider "google" {
-  project = var.project
-}
-
 # CLUSTER NETWORK
 module "gcp_network" {
   source       = "terraform-google-modules/network/google"
