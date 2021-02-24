@@ -13,7 +13,7 @@ module "gcp-network" {
     {
       subnet_name           = var.subnet_name
       subnet_ip             = "10.0.128.0/17"
-      subnet_region         = var.region
+      subnet_region         = var.cluster_region
       subnet_private_access = "true"
     },
   ]
