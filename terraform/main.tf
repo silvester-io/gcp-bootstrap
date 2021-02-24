@@ -22,6 +22,22 @@ module "cluster" {
     services_ip_range_name = var.services_ip_range_name
 }
 
+module "cluster_auth" {
+  source       = "terraform-google-modules/kubernetes-engine/google//modules/auth"
+  version      = "12.3.0"
+  project_id   = var.project
+  location     = module.cluster.location
+  cluster_name = module.cluster.name
+}
+
+provider "kubernetes" {
+  load_config_file       = false
+  host                   = module.cluster_auth.host
+  cluster_ca_certificate = module.cluster_auth.cluster_ca_certificate
+  token                  = module.cluster_auth.token
+
+}
+
 resource "kubernetes_namespace" "namespace_ingress_nginx" {
     metadata {
       name = "ingress-nginx"
