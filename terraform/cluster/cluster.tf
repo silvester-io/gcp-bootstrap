@@ -3,7 +3,7 @@ provider "google" {
 }
 
 # CLUSTER NETWORK
-module "gcp-network" {
+module "gcp_network" {
   source       = "terraform-google-modules/network/google"
   version      = "~> 2.5"
   project_id   = var.project
@@ -42,8 +42,8 @@ module "gke" {
   region     = var.cluster_region
   zones      = [var.cluster_location]
 
-  network                 = module.gcp-network.network_name
-  subnetwork              = module.gcp-network.subnets_names[0]
+  network                 = module.gcp_network.network_name
+  subnetwork              = module.gcp_network.subnets_names[0]
   ip_range_pods           = var.pods_ip_range_name
   ip_range_services       = var.services_ip_range_name
   create_service_account  = true
