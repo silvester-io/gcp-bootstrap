@@ -106,11 +106,11 @@ resource "kubernetes_cluster_role_binding" "kubeip" {
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
-    name      = kubernetes_cluster_role.kubeip_service_account.metadata.0.name
+    name      = kubernetes_cluster_role.kubeip.metadata.0.name
   }
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.kubeip_service_account.metadata.0.name
+    name      = kubernetes_service_account.kubeip.metadata.0.name
     namespace = var.kubernetes_namespace
   }
 }
