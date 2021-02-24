@@ -56,7 +56,7 @@ resource "kubernetes_namespace" "namespace_certmanager" {
 }
 
 module "kubeip" {
-    source = "./cluster"
+    source = "./kubeip"
 
     google_serviceaccount_name = var.kubeip_google_serviceaccount_name
     kubernetes_serviceaccount_name = var.kubeip_kubernetes_serviceaccount_name
