@@ -1,21 +1,21 @@
-# SERVICE ACCOUNT
+# GOOGLE - Service Account
 resource "google_service_account" "kubeip_service_account" {
   account_id = var.google_serviceaccount_name
   display_name = "kubeIP"
   project = var.project
 }
 
-# CLUSTER ROLE V
+# GOOGLE - Cluster Role
 resource "google_project_iam_custom_role" "kubeip_role" {
-  role_id     = "kubeip"
-  title       = "Kube IP Role"
+  role_id     = "kubeip-role"
+  title       = "KubeIP Role"
   description = "required permissions to run KubeIP"
   stage = "GA"
   project = var.project
   permissions = ["compute.addresses.list", "compute.instances.addAccessConfig", "compute.instances.deleteAccessConfig", "compute.instances.get", "compute.instances.list", "compute.projects.get", "container.clusters.get", "container.clusters.list", "resourcemanager.projects.get", "compute.networks.useExternalIp", "compute.subnetworks.useExternalIp", "compute.addresses.use"]
 }
 
-# CLUSTER ROLE BINDING V
+# GOOGLE - Cluster Role Binding
 resource "google_project_iam_member" "kubeip_role_binding" {
   role    = "projects/${var.project}/roles/kubeip"
   project = var.project
@@ -23,7 +23,7 @@ resource "google_project_iam_member" "kubeip_role_binding" {
   depends_on = [ google_service_account.kubeip_service_account ]
 }
 
-# IAM Policy Binding V
+# GOOGLE - IAM Policy Binding
 resource "google_service_account_iam_binding" "kubeip_iam_policy_binding" {
   service_account_id = google_service_account.kubeip_service_account.name
   role    = "roles/iam.workloadIdentityUser"
@@ -33,7 +33,7 @@ resource "google_service_account_iam_binding" "kubeip_iam_policy_binding" {
   ]
 }
 
-# IP Addresses V
+# GOOGLE - IP Addresses 
 resource "google_compute_address" "kubeip_address_1" {
   provider = google-beta
   name = "kubeip-ip-1"
@@ -43,5 +43,74 @@ resource "google_compute_address" "kubeip_address_1" {
   
   labels = { 
     "kubeip" = var.cluster_name
+  }
+}
+
+# KUBERNETES - Config Map
+resource "kubernetes_config_map" "kubeip_configmap" {
+  metadata {
+    name = "kubeip-config"
+    namespace = var.kubernetes_namespace
+    labels = {
+      "app" = "kubeip"
+    }
+  }
+
+  data = {
+    "KUBEIP_LABELKEY" = "kubeip"
+    "KUBEIP_LABELVALUE" = var.cluster_name
+    "KUBEIP_NODEPOOL" = "ingress-pool"
+    "KUBEIP_FORCEASSIGNMENT" = "true"
+    "KUBEIP_ADDITIONALNODEPOOLS" = ""
+    "KUBEIP_TICKER" = "5"
+    "KUBEIP_ALLNODEPOOLSkey" = "false"
+  }
+}
+
+# KUBERNETES - Service Account
+resource "kubernetes_service_account" "kubeip" {
+  metadata {
+    name      = var.kubernetes_serviceaccount_name
+    namespace = var.kubernetes_namespace
+    annotations = {
+      "iam.gke.io/gcp-service-account" = "${google_service_account.kubeip_service_account.email}"
+    }
+  }
+  automount_service_account_token = true
+}
+
+# KUBERNETES - Cluster Role
+resource "kubernetes_cluster_role" "kubeip" {
+  metadata {
+    name = "kubeip"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["pods"]
+    verbs      = ["get", "list", "watch"]
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["nodes"]
+    verbs      = ["get", "list", "watch", "patch"]
+  }
+}
+
+# KUBERNETES - Cluster Role Binding
+resource "kubernetes_cluster_role_binding" "kubeip" {
+  metadata {
+    name = "kubeip"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = kubernetes_cluster_role.kubeip_service_account.metadata.0.name
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = kubernetes_service_account.kubeip_service_account.metadata.0.name
+    namespace = var.kubernetes_namespace
   }
 }
