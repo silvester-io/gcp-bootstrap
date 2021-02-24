@@ -39,7 +39,7 @@ module "gke" {
   project_id = var.project
   name       = var.cluster_name
   regional   = false
-  region     = var.region
+  region     = var.cluster_region
   zones      = [var.cluster_location]
 
   network                 = module.gcp-network.network_name
@@ -95,7 +95,7 @@ module "gke" {
       "https://www.googleapis.com/auth/trace.append",
     ]
   }
-  
+
   node_pools_taints = {
     all = []
     ingress-pool = [

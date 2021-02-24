@@ -45,18 +45,6 @@ jobs:
     - name: "CLUSTER - Terraform - Init"
       run: terraform -chdir=./terraform/cluster init -input=false
 
-    - name: "CLUSTER - Terraform - Import - Cluster"
-      run: terraform -chdir=./terraform/cluster import google_container_cluster.silvester_cluster $GCP_LOCATION/$GKE_CLUSTER_NAME
-      continue-on-error: true
-
-    - name: "CLUSTER - Terraform - Import - Ingress Node Pool"
-      run: terraform -chdir=./terraform/cluster import google_container_node_pool.silvester_nodepool_ingress $GCP_LOCATION/$GKE_CLUSTER_NAME/silvester-nodepool-ingress 
-      continue-on-error: true
-
-    - name: "CLUSTER - Terraform - Import - Apps Node Pool"
-      run: terraform -chdir=./terraform/cluster import google_container_node_pool.silvester_nodepool_apps $GCP_LOCATION/$GKE_CLUSTER_NAME/silvester-nodepool-apps 
-      continue-on-error: true
-
     - name: "CLUSTER - Terraform - Import - HTTP Traffic"
       run: terraform -chdir=./terraform/cluster import google_compute_firewall.http_node_port http-node-port
       continue-on-error: true
