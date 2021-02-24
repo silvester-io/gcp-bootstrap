@@ -125,25 +125,3 @@ module "gke" {
     },
   ]
 }
-
-# HTTP TRAFFIC
-resource "google_compute_firewall" "http_node_port" {
-  name    = "http-node-port"
-  network = "default"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["80"]
-  }
-}
-
-# HTTPS TRAFFIC
-resource "google_compute_firewall" "https_node_port" {
-  name    = "https-node-port"
-  network = "default"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["443"]
-  }
-}
