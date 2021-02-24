@@ -32,7 +32,7 @@ jobs:
         project_id: silvester-304916
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
-    
+     
     - name: "INSTALL - CLI - Terraform"
       uses: hashicorp/setup-terraform@v1
             
