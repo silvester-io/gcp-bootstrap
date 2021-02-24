@@ -7,7 +7,7 @@ resource "google_service_account" "kubeip_service_account" {
 
 # GOOGLE - Cluster Role
 resource "google_project_iam_custom_role" "kubeip_role" {
-  role_id     = "kubeip-role"
+  role_id     = "kubeip_role"
   title       = "KubeIP Role"
   description = "required permissions to run KubeIP"
   stage = "GA"
@@ -17,7 +17,7 @@ resource "google_project_iam_custom_role" "kubeip_role" {
 
 # GOOGLE - Cluster Role Binding
 resource "google_project_iam_member" "kubeip_role_binding" {
-  role    = "projects/${var.project}/roles/kubeip"
+  role    = "projects/${var.project}/roles/kubeip_role"
   project = var.project
   member = "serviceAccount:${var.google_serviceaccount_name}@${var.project}.iam.gserviceaccount.com"
   depends_on = [ google_service_account.kubeip_service_account ]
