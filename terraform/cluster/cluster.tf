@@ -2,80 +2,128 @@ provider "google" {
   project = var.project
 }
 
+# CLUSTER NETWORK
+module "gcp-network" {
+  source       = "terraform-google-modules/network/google"
+  version      = "~> 2.5"
+  project_id   = var.project
+  network_name = var.network
+
+  subnets = [
+    {
+      subnet_name           = var.subnet_name
+      subnet_ip             = "10.0.128.0/17"
+      subnet_region         = var.region
+      subnet_private_access = "true"
+    },
+  ]
+
+  secondary_ranges = {
+    "${var.subnet_name}" = [
+      {
+        range_name    = var.pods_ip_range_name
+        ip_cidr_range = "192.168.128.0/18"
+      },
+      {
+        range_name    =  var.services_ip_range_name
+        ip_cidr_range = "192.168.192.0/18"
+      },
+    ]
+  }
+}
+
 # CLUSTER
-resource "google_container_cluster" "silvester_cluster" {
-  name = "silvester-cluster"
-  location = var.cluster_location
+module "gke" {
+  source     = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
+  version    = "12.3.0"
+  project_id = var.project
+  name       = var.cluster_name
+  regional   = false
+  region     = var.region
+  zones      = [var.cluster_location]
 
-  # We can't create a cluster with no node pool defined, but we want to only use
-  # separately managed node pools. So we create the smallest possible default
-  # node pool and immediately delete it.
-  remove_default_node_pool = true
-  initial_node_count = 1
+  network                 = module.gcp-network.network_name
+  subnetwork              = module.gcp-network.subnets_names[0]
+  ip_range_pods           = var.pods_ip_range_name
+  ip_range_services       = var.services_ip_range_name
+  create_service_account  = true
+  enable_private_endpoint = false
 
-  workload_identity_config {
-    identity_namespace = "${var.project}.svc.id.goog"
+  http_load_balancing        = false
+  remove_default_node_pool   = true
+  skip_provisioners          = true
+  maintenance_start_time     = "04:00"
+  network_policy             = false
+  monitoring_service         = "none"
+  logging_service            = "none"
+  add_cluster_firewall_rules = false
+  firewall_inbound_ports     = ["8443", "9443", "15017"]
+
+  node_pools = [
+    {
+      name         = "ingress-pool"
+      machine_type = "e2-micro"
+      disk_size_gb = 10
+      autoscaling  = false
+      node_count   = 1
+      image_type   = "COS_CONTAINERD"
+      auto_upgrade = true
+      preemptible  = true
+    },
+    {
+      name               = "web-pool"
+      machine_type       = "n2d-highmem-4"
+      disk_size_gb       = 30
+      autoscaling        = false
+      initial_node_count = 1
+      node_count         = 1
+      image_type         = "COS_CONTAINERD"
+      auto_upgrade       = true
+      preemptible        = true
+    },
+  ]
+
+  node_pools_oauth_scopes = {
+    all = [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/service.management",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/compute",
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/trace.append",
+    ]
   }
-}
+  
+  node_pools_taints = {
+    all = []
+    ingress-pool = [
 
+      {
+        key    = "ingress-pool"
+        value  = true
+        effect = "NO_EXECUTE"
+      },
 
-# INGRESS NODE POOL
-resource "google_container_node_pool" "silvester_nodepool_ingress" {
-  name     = "silvester-nodepool-ingress"
-  cluster  = google_container_cluster.silvester_cluster.name
-  initial_node_count = 1
-  location = var.cluster_location
-
-  autoscaling {
-    min_node_count = 1
-    max_node_count = 1
+    ]
   }
 
-  management {
-    auto_repair = true
-    auto_upgrade = true
+  node_pools_tags = {
+    ingress-pool = [
+      "ingress-pool"
+    ]
+    web-pool = [
+      "web-pool"
+    ]
   }
 
-  node_config {
-    workload_metadata_config {
-      node_metadata = "GKE_METADATA_SERVER"
-    }
-    machine_type = "e2-micro" 
-    preemptible  = false 
-    disk_size_gb = 10
-    taint = [ {
-      effect = "NO_SCHEDULE"
-      key = "dedicated"
-      value = "ingress"
-    } ]
-  }
-}
-
-# APPLICATION NODE POOL
-resource "google_container_node_pool" "silvester_nodepool_apps" {
-  name     = "silvester-nodepool-apps"
-  cluster  = google_container_cluster.silvester_cluster.name
-  initial_node_count = 1
-  location = var.cluster_location
-
-  autoscaling {
-    min_node_count = 1
-    max_node_count = 1
-  }
-
-  management {
-    auto_repair = true
-    auto_upgrade = true
-  }
-
-  node_config {
-    workload_metadata_config {
-      node_metadata = "GKE_METADATA_SERVER"
-    }
-    disk_size_gb = 30
-    machine_type = "n2d-highmem-4" 
-    preemptible  = true 
-  }
+  master_authorized_networks = [
+    {
+      display_name = "Anyone"
+      cidr_block   = "0.0.0.0/0"
+    },
+  ]
 }
 
 # HTTP TRAFFIC
