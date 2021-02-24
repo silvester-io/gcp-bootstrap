@@ -7,7 +7,3 @@ variable "kubeip_kubernetes_serviceaccount_name" {
     type = string
     default = "kubeip-serviceaccount"
 }
-
-variable "kubeconfig" {
-    type = string
-}

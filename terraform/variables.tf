@@ -1,3 +1,4 @@
+#CLUSTER
 variable "project" {
     type = string
     default = "silvester-304916"
@@ -37,9 +38,6 @@ variable "services_ip_range_name" {
     type = string
     default = "ip-range-services"
 }
-
-
-
 
 #KUBE IP
 variable "kubeip_google_serviceaccount_name" {

@@ -35,11 +35,29 @@ provider "kubernetes" {
   host                   = module.cluster_auth.host
   cluster_ca_certificate = module.cluster_auth.cluster_ca_certificate
   token                  = module.cluster_auth.token
-
 }
 
 resource "kubernetes_namespace" "namespace_ingress_nginx" {
     metadata {
       name = "ingress-nginx"
     }
+}
+
+resource "kubernetes_namespace" "namespace_argocd" {
+    metadata {
+      name = "argocd"
+    }
+}
+
+resource "kubernetes_namespace" "namespace_certmanager" {
+    metadata {
+      name = "certmanager"
+    }   
+}
+
+module "kubeip" {
+    source = "./cluster"
+
+    google_serviceaccount_name = var.kubeip_google_serviceaccount_name
+    kubernetes_serviceaccount_name = var.kubeip_kubernetes_serviceaccount_name
 }
