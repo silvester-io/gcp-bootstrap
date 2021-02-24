@@ -26,8 +26,8 @@ module "cluster_auth" {
   source       = "terraform-google-modules/kubernetes-engine/google//modules/auth"
   version      = "12.3.0"
   project_id   = var.project
-  location     = module.cluster.location
-  cluster_name = module.cluster.name
+  location     = var.cluster_location
+  cluster_name = var.cluster_name
 }
 
 provider "kubernetes" {
