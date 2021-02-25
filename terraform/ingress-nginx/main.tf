@@ -443,7 +443,6 @@ resource "kubernetes_daemonset" "ingress_nginx_controller" {
 resource "kubernetes_validating_webhook_configuration" "ingress_nginx_admission" {
   metadata {
     name = "ingress-nginx-admission"
-
     labels = {
       "app.kubernetes.io/component" = "admission-webhook"
       "app.kubernetes.io/instance" = "ingress-nginx"
@@ -465,6 +464,9 @@ resource "kubernetes_validating_webhook_configuration" "ingress_nginx_admission"
 
     rule {
       operations = ["CREATE", "UPDATE"]
+      api_groups = [ "networking.k8s.io" ]
+      api_versions = [ "v1beta1" ]
+      resources = [ "ingresses" ]
     }
 
     failure_policy            = "Fail"
