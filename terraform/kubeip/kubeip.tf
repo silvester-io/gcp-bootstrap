@@ -114,3 +114,69 @@ resource "kubernetes_cluster_role_binding" "kubeip" {
     namespace = var.kubernetes_namespace
   }
 }
+
+# KUBERNETES - Deployment
+resource "kubernetes_deployment" "kubeip" {
+  metadata {
+    name      = "kubeip"
+    namespace = var.kubernetes_namespace
+    labels = {
+      app = "kubeip"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "kubeip"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "kubeip"
+        }
+      }
+
+      spec {
+        container {
+          image = "doitintl/kubeip:latest"
+          name  = "kubeip"
+
+          env_from {
+            config_map_ref {
+              name = kubernetes_config_map.kubeip.metadata.0.name
+            }
+          }
+          
+          resources {
+            limits {
+              cpu    = "50"
+              memory = "50Mi"
+            }
+            requests {
+              cpu    = "50m"
+              memory = "50Mi"
+            }
+          }
+        }
+        automount_service_account_token = true
+        node_selector = {
+          "cloud.google.com/gke-nodepool" = "web-pool"
+        }
+        restart_policy       = "Always"
+        priority_class_name  = "system-node-critical"
+        service_account_name = kubernetes_service_account.kubeip.metadata.0.name
+      }
+    }
+  }
+
+  timeouts {
+    create = "3m"
+    update = "3m"
+    delete = "3m"
+  }
+}
