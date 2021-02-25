@@ -47,7 +47,7 @@ resource "google_compute_address" "kubeip_address_1" {
 }
 
 # KUBERNETES - Config Map
-resource "kubernetes_config_map" "kubeip_configmap" {
+resource "kubernetes_config_map" "kubeip" {
   metadata {
     name = "kubeip-config"
     namespace = var.kubernetes_namespace
@@ -151,7 +151,7 @@ resource "kubernetes_deployment" "kubeip" {
               name = kubernetes_config_map.kubeip.metadata.0.name
             }
           }
-          
+
           resources {
             limits {
               cpu    = "50"
