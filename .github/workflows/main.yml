@@ -48,13 +48,6 @@ jobs:
     - name: "CLUSTER - Terraform - Apply"
       run: terraform -chdir=./terraform apply -input=false -auto-approve
  
-    - name: "KUBERNETES - Install Nginx Ingress Controller"
-      run: |
-        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-        helm repo update
-        helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -f ./charts/nginx-ingress-controller/values.yaml --namespace ingress-nginx --kubeconfig $KUBECONFIG
-    
-
 
      # INSTALL KUBERNETES APPLICATIONS
    # - name: "KUBERNETES - Set Credentials"

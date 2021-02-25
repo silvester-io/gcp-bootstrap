@@ -55,6 +55,12 @@ resource "kubernetes_namespace" "namespace_certmanager" {
     }   
 }
 
+
+module "ingress_nginx" {
+  source    = "./ingress-nginx"
+  namespace = "ingress-nginx"
+}
+
 module "kubeip" {
     source = "./kubeip"
 
