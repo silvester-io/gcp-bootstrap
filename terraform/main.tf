@@ -38,7 +38,7 @@ provider "kubernetes" {
 }
 
 resource "kubernetes_namespace" "namespace_ingress_nginx" {
-    metadata {
+    metadata { 
       name = "ingress-nginx"
     }
 }
