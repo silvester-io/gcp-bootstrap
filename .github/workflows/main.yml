@@ -15,7 +15,7 @@ jobs:
         GCP_REGION: europe-west1
         GCP_ZONE: b
         GKE_CLUSTER_NAME: silvester-cluster
-        PROJECT_ID: silvester-304916
+        PROJECT_ID: silvester-305918
         KUBEIP_NODEPOOL: silvester-nodepool-apps
 
     defaults:
@@ -29,7 +29,7 @@ jobs:
     - name: INSTALL - CLI - GCLoud
       uses: google-github-actions/setup-gcloud@master
       with:
-        project_id: silvester-304916
+        project_id: silvester-305918
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
      

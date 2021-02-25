@@ -1,8 +1,14 @@
-# GOOGLE - Service Account
-resource "google_service_account" "kubeip_service_account" {
-  account_id = var.google_serviceaccount_name
-  display_name = "kubeIP"
+# GOOGLE - IP Addresses 
+resource "google_compute_address" "kubeip_address_1" {
+  name = "kubeip-ip-1"
   project = var.project
+  provider = google-beta
+  region = var.cluster_region
+  network_tier = "STANDARD"
+  
+  labels = { 
+    kubeip = var.cluster_name
+  }
 }
 
 # GOOGLE - Cluster Role
@@ -13,6 +19,14 @@ resource "google_project_iam_custom_role" "kubeip_role" {
   stage = "GA"
   project = var.project
   permissions = ["compute.addresses.list", "compute.instances.addAccessConfig", "compute.instances.deleteAccessConfig", "compute.instances.get", "compute.instances.list", "compute.projects.get", "container.clusters.get", "container.clusters.list", "resourcemanager.projects.get", "compute.networks.useExternalIp", "compute.subnetworks.useExternalIp", "compute.addresses.use"]
+}
+
+# GOOGLE - Service Account
+resource "google_service_account" "kubeip_service_account" {
+  account_id = var.google_serviceaccount_name
+  project = var.project
+  display_name = "kubeIP"
+  depends_on = [google_project_iam_custom_role.kubeip_role]
 }
 
 # GOOGLE - Cluster Role Binding
@@ -31,19 +45,6 @@ resource "google_service_account_iam_binding" "kubeip_iam_policy_binding" {
   members = [
     "serviceAccount:${var.project}.svc.id.goog[${var.kubernetes_namespace}/${var.kubernetes_serviceaccount_name}]",
   ]
-}
-
-# GOOGLE - IP Addresses 
-resource "google_compute_address" "kubeip_address_1" {
-  provider = google-beta
-  name = "kubeip-ip-1"
-  region = var.cluster_region
-  project = var.project
-  network_tier = "STANDARD"
-  
-  labels = { 
-    "kubeip" = var.cluster_name
-  }
 }
 
 # KUBERNETES - Config Map
