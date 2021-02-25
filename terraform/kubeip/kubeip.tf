@@ -47,7 +47,7 @@ resource "google_compute_address" "kubeip_address_1" {
 }
 
 # KUBERNETES - Config Map
-resource "kubernetes_config_map" "kubeip" {
+resource "kubernetes_config_map" "kubeip_configmap" {
   metadata {
     name = "kubeip-config"
     namespace = var.kubernetes_namespace
@@ -148,7 +148,7 @@ resource "kubernetes_deployment" "kubeip" {
 
           env_from {
             config_map_ref {
-              name = kubernetes_config_map.kubeip.metadata.0.name
+              name = kubernetes_config_map.kubeip_configmap.metadata.0.name
             }
           }
 
