@@ -21,7 +21,7 @@ jobs:
     - name: INSTALL - CLI - GCLoud
       uses: google-github-actions/setup-gcloud@master
       with:
-        project_id: silvester-305918
+        project_id: silvester-306016
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
      

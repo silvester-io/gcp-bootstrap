@@ -4,5 +4,5 @@ nodes:
 
 
 gsaServiceAccount: kubeip-serviceaccount
-projectId: silvester-305918
+projectId: silvester-306016
 clusterName: silvester-cluster

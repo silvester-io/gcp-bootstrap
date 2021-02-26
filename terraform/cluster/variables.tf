@@ -1,6 +1,6 @@
 variable "project" {
     type = string
-    default = "silvester-305918silvester-304916"
+    default = "306016"
 }
 
 variable "network" {

@@ -1,7 +1,7 @@
 #CLUSTER
 variable "project" {
     type = string
-    default = "silvester-305918"
+    default = "silvester-306016"
 }
 
 variable "network" {
