@@ -31,7 +31,7 @@ module "gcp_network" {
 
 resource "google_compute_firewall" "http_node_port" {
   name    = "http-node-port"
-  network = module.gvp_network.network.name
+  network = module.gcp_network.network.name
 
   allow {
     protocol = "tcp"
@@ -41,7 +41,7 @@ resource "google_compute_firewall" "http_node_port" {
 
 resource "google_compute_firewall" "https_node_port" {
   name    = "https-node-port"
-  network = module.gvp_network.network.name
+  network = module.gcp_network.network.name
 
   allow {
     protocol = "tcp"
