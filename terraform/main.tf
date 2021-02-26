@@ -23,7 +23,7 @@ module "cluster" {
 }
 
 module "cluster_auth" {
-  source       = "terraform-google-modules/kubernetes-engine/google/modules/auth"
+  source       = "terraform-google-modules/kubernetes-engine/google//modules/auth"
   version      = "12.3.0"
   project_id   = var.project
   location     = var.cluster_location
