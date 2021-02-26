@@ -28,6 +28,28 @@ module "gcp_network" {
   }
 }
 
+
+resource "google_compute_firewall" "http_node_port" {
+  name    = "http-node-port"
+  network = module.gvp_network.network.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+}
+
+resource "google_compute_firewall" "https_node_port" {
+  name    = "https-node-port"
+  network = module.gvp_network.network.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+}
+
+
 # CLUSTER
 module "gke" {
   source     = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
