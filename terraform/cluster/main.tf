@@ -95,13 +95,11 @@ module "gke" {
   node_pools_taints = {
     all = []
     ingress-pool = [
-
       {
-        key    = "ingress-pool"
-        value  = true
-        effect = "NO_EXECUTE"
-      },
-
+        key    = "dedicated"
+        value  = "ingress"
+        effect = "NO_SCHEDULE"
+      }
     ]
   }
 
