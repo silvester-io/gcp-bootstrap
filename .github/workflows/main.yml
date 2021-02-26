@@ -10,14 +10,6 @@ jobs:
     name: Linux build on node ${{ matrix.node_version }}
     runs-on: ubuntu-latest
 
-    env:
-        GCP_LOCATION: europe-west1-b 
-        GCP_REGION: europe-west1
-        GCP_ZONE: b
-        GKE_CLUSTER_NAME: silvester-cluster
-        PROJECT_ID: silvester-305918
-        KUBEIP_NODEPOOL: silvester-nodepool-apps
-
     defaults:
       run:
         working-directory: ./
