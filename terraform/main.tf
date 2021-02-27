@@ -38,30 +38,30 @@ provider "kubernetes" {
 }
 
 resource "kubernetes_namespace" "ingress_nginx" {
-    metadata {
-      name = "ingress-nginx"
-    }
+  metadata {
+    name = "ingress-nginx"
+  }
 }
 
 resource "kubernetes_namespace" "namespace_argocd" {
-    metadata {
-      name = "argocd"
-    }
+  metadata {
+    name = "argocd"
+  }
 }
 
 resource "kubernetes_namespace" "namespace_certmanager" {
-    metadata {
-      name = "cert-manager"
-    }   
+  metadata {
+    name = "cert-manager"
+  }   
 }
 
 module "kubeip" {
-    source = "./kubeip"
+  source = "./kubeip"
 
-    google_serviceaccount_name = var.kubeip_google_serviceaccount_name
-    kubernetes_serviceaccount_name = var.kubeip_kubernetes_serviceaccount_name
-    kubernetes_namespace = var.kubeip_kubernetes_namespace
-    cluster_region = var.cluster_region
-    cluster_name = var.cluster_name
-    project = var.project
+  google_serviceaccount_name = var.kubeip_google_serviceaccount_name
+  kubernetes_serviceaccount_name = var.kubeip_kubernetes_serviceaccount_name
+  kubernetes_namespace = var.kubeip_kubernetes_namespace
+  cluster_region = var.cluster_region
+  cluster_name = var.cluster_name
+  project = var.project
 }

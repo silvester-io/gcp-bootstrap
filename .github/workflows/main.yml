@@ -51,6 +51,10 @@ jobs:
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
       
+    - name: "KUBERNETES - Create Artifactory Secret"
+      run: kubectl create secret docker-registry artifactory-credentials --docker-server=silvester.jfrog.io --docker-username=${{secrets.ARTIFACTORY_USERNAME}} --docker-password=${{secrets.ARTIFACTORY_PASSWORD}} --docker-email=${{secrets.ARTIFACTORY_USERNAME}} --namespace pathfinder
+      continue-on-error: true
+
     - name: "HELM - Install Nginx Ingress Controller"
       run: |
         helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -72,7 +76,7 @@ jobs:
         helm dependency update ./charts/argocd
         helm upgrade --install argocd  ./charts/argocd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG
      
-
+      
 
 
 
