@@ -38,7 +38,7 @@ resource "google_project_iam_member" "kubeip_role_binding" {
 }
 
 # GOOGLE - IAM Policy Binding
-resource "google_service_account_iam_binding" "kubeip_iam_policy_binding" {
+resource "google_service_account_iam_member" "sa_iam_member" {
   service_account_id = google_service_account.kubeip_service_account.name
   role    = "roles/iam.workloadIdentityUser"
 
@@ -64,7 +64,7 @@ resource "kubernetes_config_map" "kubeip_configmap" {
     "KUBEIP_FORCEASSIGNMENT" = "true"
     "KUBEIP_ADDITIONALNODEPOOLS" = ""
     "KUBEIP_TICKER" = "5"
-    "KUBEIP_ALLNODEPOOLSkey" = "false"
+    "KUBEIP_ALLNODEPOOLS" = "false"
   }
 }
 

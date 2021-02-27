@@ -136,6 +136,10 @@ module "gke" {
 
   master_authorized_networks = [
     {
+      cidr_block   = module.gcp_network.subnets_ips[0]
+      display_name = "VPC"
+    },
+    {
       display_name = "Anyone"
       cidr_block   = "0.0.0.0/0"
     },
