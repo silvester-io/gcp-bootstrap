@@ -49,6 +49,15 @@ resource "google_compute_firewall" "https_node_port" {
   }
 }
 
+resource "google_compute_firewall" "ssh_node_port" {
+  name = "ssh-node-port"
+  network = module.gcp_network.network_name
+
+  allow {
+    protocol = "tcp"
+    ports = ["22"]
+  }
+}
 
 # CLUSTER
 module "gke" {
