@@ -37,6 +37,12 @@ provider "kubernetes" {
   token                  = module.cluster_auth.token
 }
 
+resource "kubernetes_namespace" "ingress_nginx" {
+    metadata {
+      name = "ingress-nginx"
+    }
+}
+
 resource "kubernetes_namespace" "namespace_argocd" {
     metadata {
       name = "argocd"
@@ -58,9 +64,4 @@ module "kubeip" {
     cluster_region = var.cluster_region
     cluster_name = var.cluster_name
     project = var.project
-}
-
-module "ingress_nginx" {
-  source    = "./ingress-nginx"
-  namespace = "ingress-nginx"
 }
