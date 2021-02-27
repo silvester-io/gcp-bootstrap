@@ -1,4 +1,8 @@
 # CLUSTER NETWORK
+resource "google_compute_project_default_network_tier" "default" {
+  network_tier = "STANDARD"
+}
+
 module "gcp_network" {
   source       = "terraform-google-modules/network/google"
   version      = "~> 2.5"
