@@ -67,7 +67,7 @@ jobs:
       run: |
         helm upgrade --install letsencrypt ./charts/letsencrypt --kubeconfig $KUBECONFIG      
 
-    - name: "KUBERNETES - Install Argo CD"
+    - name: "HELM - Install Argo CD"
       run: |
         helm dependency update ./charts/argocd
         helm upgrade --install argocd  ./charts/argocd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG
