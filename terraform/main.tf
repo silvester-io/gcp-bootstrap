@@ -66,7 +66,7 @@ module "kubeip" {
     project = var.project
 }
 
-#module "ingress_nginx" {
-#  source    = "./ingress-nginx"
-#  namespace = "ingress-nginx"
-#  }
+module "ingress_nginx" {
+  source    = "./ingress-nginx"
+  namespace = "ingress-nginx"
+}
