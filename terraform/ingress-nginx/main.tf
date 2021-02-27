@@ -12,7 +12,7 @@ resource "kubernetes_namespace" "ingress_nginx" {
 resource "kubernetes_service_account" "ingress_nginx" {
   metadata {
     name      = "ingress-nginx"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "controller"
@@ -25,7 +25,7 @@ resource "kubernetes_service_account" "ingress_nginx" {
 resource "kubernetes_config_map" "ingress_nginx_controller" {
   metadata {
     name      = "ingress-nginx-controller"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "controller"
@@ -101,7 +101,7 @@ resource "kubernetes_cluster_role_binding" "ingress_nginx" {
   subject {
     kind      = "ServiceAccount"
     name      = "ingress-nginx"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
   }
 
   role_ref {
@@ -114,7 +114,7 @@ resource "kubernetes_cluster_role_binding" "ingress_nginx" {
 resource "kubernetes_role" "ingress_nginx" {
   metadata {
     name      = "ingress-nginx"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "controller"
@@ -182,7 +182,7 @@ resource "kubernetes_role" "ingress_nginx" {
 resource "kubernetes_role_binding" "ingress_nginx" {
   metadata {
     name      = "ingress-nginx"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "controller"
@@ -194,7 +194,7 @@ resource "kubernetes_role_binding" "ingress_nginx" {
   subject {
     kind      = "ServiceAccount"
     name      = "ingress-nginx"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
   }
 
   role_ref {
@@ -207,7 +207,7 @@ resource "kubernetes_role_binding" "ingress_nginx" {
 resource "kubernetes_service" "ingress_nginx_controller_admission" {
   metadata {
     name      = "ingress-nginx-controller-admission"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "controller"
@@ -236,7 +236,7 @@ resource "kubernetes_service" "ingress_nginx_controller_admission" {
 resource "kubernetes_service" "ingress_nginx_controller" {
   metadata {
     name      = "ingress-nginx-controller"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "controller"
@@ -275,7 +275,7 @@ resource "kubernetes_service" "ingress_nginx_controller" {
 resource "kubernetes_daemonset" "ingress_nginx_controller" {
   metadata {
     name      = "ingress-nginx-controller"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "controller"
@@ -314,7 +314,7 @@ resource "kubernetes_daemonset" "ingress_nginx_controller" {
         container {
           name  = "controller"
           image = "k8s.gcr.io/ingress-nginx/controller:v0.44.0@sha256:3dd0fac48073beaca2d67a78c746c7593f9c575168a17139a9955a82c63c4b9a"
-          args  = ["/nginx-ingress-controller", "--publish-service=$(POD_NAMESPACE)/ingress-nginx-controller", "--election-id=ingress-controller-leader", "--ingress-class=nginx", "--configmap=$(POD_NAMESPACE)/ingress-nginx-controller", "--validating-webhook=:8443", "--validating-webhook-certificate=/usr/local/certificates/cert", "--validating-webhook-key=/usr/local/certificates/key", "--enable-ssl-passthrough=true"]
+          args  = ["/nginx-ingress-controller", "--publish-service=$(POD_NAMESPACE)/ingress-nginx-controller", "--election-id=ingress-controller-leader", "--ingress-class=nginx", "--configmap=$(POD_NAMESPACE)/ingress-nginx-controller", "--validating-webhook=:8443", "--validating-webhook-certificate=/usr/local/certificates/cert", "--validating-webhook-key=/usr/local/certificates/key", "--enable-ssl-passthrough=true",  "--report-node-internal-ip-address=true"]
 
           port {
             name           = "http"
@@ -422,7 +422,7 @@ resource "kubernetes_daemonset" "ingress_nginx_controller" {
         }
 
         termination_grace_period_seconds = 30
-        dns_policy                       = "ClusterFirst"
+        dns_policy                       = "ClusterFirstWithHostNet"
 
         node_selector = {
           "cloud.google.com/gke-nodepool" = "ingress-pool"
@@ -461,7 +461,7 @@ resource "kubernetes_validating_webhook_configuration" "ingress_nginx_admission"
 
     client_config {
       service {
-        namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+        namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
         name      = "ingress-nginx-controller-admission"
         path      = "/networking/v1beta1/ingresses"
       }
@@ -482,7 +482,7 @@ resource "kubernetes_validating_webhook_configuration" "ingress_nginx_admission"
 resource "kubernetes_service_account" "ingress_nginx_admission" {
   metadata {
     name      = "ingress-nginx-admission"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "admission-webhook"
@@ -530,7 +530,7 @@ resource "kubernetes_cluster_role_binding" "ingress_nginx_admission" {
   subject {
     kind      = "ServiceAccount"
     name      = "ingress-nginx-admission"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
   }
 
   role_ref {
@@ -543,7 +543,7 @@ resource "kubernetes_cluster_role_binding" "ingress_nginx_admission" {
 resource "kubernetes_role" "ingress_nginx_admission" {
   metadata {
     name      = "ingress-nginx-admission"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "admission-webhook"
@@ -562,7 +562,7 @@ resource "kubernetes_role" "ingress_nginx_admission" {
 resource "kubernetes_role_binding" "ingress_nginx_admission" {
   metadata {
     name      = "ingress-nginx-admission"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "admission-webhook"
@@ -575,7 +575,7 @@ resource "kubernetes_role_binding" "ingress_nginx_admission" {
   subject {
     kind      = "ServiceAccount"
     name      = "ingress-nginx-admission"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
   }
 
   role_ref {
@@ -588,7 +588,7 @@ resource "kubernetes_role_binding" "ingress_nginx_admission" {
 resource "kubernetes_job" "ingress_nginx_admission_create" {
   metadata {
     name      = "ingress-nginx-admission-create"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "admission-webhook"
@@ -658,7 +658,7 @@ resource "kubernetes_job" "ingress_nginx_admission_create" {
 resource "kubernetes_job" "ingress_nginx_admission_patch" {
   metadata {
     name      = "ingress-nginx-admission-patch"
-    namespace = kubernetes_namespace.inress_nginx.metadata.0.name
+    namespace = kubernetes_namespace.ingress_nginx.metadata.0.name
 
     labels = {
       "app.kubernetes.io/component" = "admission-webhook"
