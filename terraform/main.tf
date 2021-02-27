@@ -51,7 +51,7 @@ resource "kubernetes_namespace" "namespace_argocd" {
 
 resource "kubernetes_namespace" "namespace_certmanager" {
     metadata {
-      name = "certmanager"
+      name = "cert-manager"
     }   
 }
 
