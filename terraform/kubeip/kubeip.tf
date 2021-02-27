@@ -41,10 +41,7 @@ resource "google_project_iam_member" "kubeip_role_binding" {
 resource "google_service_account_iam_member" "sa_iam_member" {
   service_account_id = google_service_account.kubeip_service_account.name
   role    = "roles/iam.workloadIdentityUser"
-
-  members = [
-    "serviceAccount:${var.project}.svc.id.goog[${var.kubernetes_namespace}/${var.kubernetes_serviceaccount_name}]",
-  ]
+  member = "serviceAccount:${var.project}.svc.id.goog[${var.kubernetes_namespace}/${var.kubernetes_serviceaccount_name}]"
 }
 
 # KUBERNETES - Config Map
