@@ -18,7 +18,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: INSTALL - CLI - GCloud
+    - name: "INSTALL - CLI - GCloud"
       uses: google-github-actions/setup-gcloud@master
       with:
         project_id: silvester-306016
@@ -28,7 +28,7 @@ jobs:
     - name: "INSTALL - CLI - Terraform"
       uses: hashicorp/setup-terraform@v1
             
-    - name: INSTALL - CLI - Helm 
+    - name: "INSTALL - CLI - Helm"
       uses: azure/setup-helm@v1
 
 
@@ -43,25 +43,16 @@ jobs:
     - name: "CLUSTER - Terraform - Apply"
       run: terraform -chdir=./terraform apply -input=false -auto-approve
  
+
+
+
+    # KUBERNETES
     - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main 
       with:
         cluster_name: silvester-cluster
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
-      
-
-
-    # ARTIFACTORY    
-    # Using Terraform for secrets is inherently unsafe as the secret values (even when passed in through TF_VAR_ variables) are stored unencrypted in the Terraform state.    
-    - name: "KUBERNETES - Delete Existing Artifactory Secret"
-      run: kubectl delete secret artifactory-credentials
-      continue-on-error: true
-
-    - name: "KUBERNETES - Create Artifactory Secret"
-      run: kubectl create secret docker-registry artifactory-credentials --docker-server=silvester.jfrog.io --docker-username=${{secrets.ARTIFACTORY_USERNAME}} --docker-password=${{secrets.ARTIFACTORY_PASSWORD}} --docker-email=${{secrets.ARTIFACTORY_USERNAME}}
-
-
 
     # HELM  
     - name: "HELM - Install Nginx Ingress Controller"
@@ -84,83 +75,3 @@ jobs:
       run: |
         helm dependency update ./charts/argocd
         helm upgrade --install argocd  ./charts/argocd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG
-     
-      
-
-
-
-  #  TERRAFORM KUBERNETES NAMESPACES
-  #  - name: "CLUSTER - Terraform - Init"
-  #    run: terraform -chdir=./terraform/kubernetes init -input=false
-
-  #  - name: "CLUSTER - Terraform - Import - CertManager Namespace"
-  #    run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.certmanager_namespace cert-manager
-  #    continue-on-error: true
-      
-  #  - name: "CLUSTER - Terraform - Import - Nginx Ingress Namespace"
-  #    run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.ingress_nginx_namespace ingress-nginx
-  #    continue-on-error: true
-      
-  #  - name: "CLUSTER - Terraform - Import - Argo CD Namespace"
-  #    run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes import kubernetes_namespace.argocd_namespace argocd
-  #    continue-on-error: true
-
-  #  - name: "CLUSTER - Terraform - Apply"
-  #    run: TF_VAR_kubeconfig=$KUBECONFIG terraform -chdir=./terraform/kubernetes apply -input=false -auto-approve 
-
-
-
-
-    # TERRAFORM KUBEIP
-  # - name: "CLUSTER - Terraform - Init"
-  #    run: terraform -chdir=./terraform/kubeip init -input=false
-
-  #  - name: "CLUSTER - Terraform - Import - KubeIP Service Account"
-  #    run: terraform -chdir=./terraform/kubeip import google_service_account.kubeip_service_account "projects/$PROJECT_ID/serviceAccounts/kubeip-serviceaccount@$PROJECT_ID.iam.gserviceaccount.com"
-  #    continue-on-error: true
-      
-  #  - name: "CLUSTER - Terraform - Import - KubeIP Role"
-  #    run: terraform -chdir=./terraform/kubeip import google_project_iam_custom_role.kubeip_role kubeip 
-  #    continue-on-error: true
-      
-  #  - name: "CLUSTER - Terraform - Import - KubeIP Role Binding"
-  #    run: terraform -chdir=./terraform/kubeip import google_project_iam_member.kubeip_role_binding "$PROJECT_ID roles/kubeip"
-  #    continue-on-error: true
-
-  #  - name: "CLUSTER - Terraform - Import - KubeIP IAM Policy Binding"
-  #    run: terraform -chdir=./terraform/kubeip import google_service_account_iam_binding.kubeip_iam_policy_binding "projects/$PROJECT_ID/serviceAccounts/kubeip-serviceaccount@$PROJECT_ID.iam.gserviceaccount.com roles/iam.workloadIdentityUser"
-  #    continue-on-error: true
-
-  #  - name: "CLUSTER - Terraform - Import - KubeIP Address"
-  #    run: terraform -chdir=./terraform/kubeip import google_compute_address.kubeip_address_1 "projects/$PROJECT_ID/regions/$GCP_REGION/addresses/kubeip-ip-1"
-  #    continue-on-error: true
-
-  #  - name: "CLUSTER - Terraform - Apply"
-  #    run: terraform -chdir=./terraform/kubeip apply -input=false -auto-approve
-
-
-
- 
-    
-  # Installing KubeIp manually post-facto for now until it works..
-
-  #  - name: "KUBERNETES - Install KubeIP"    
-  #    run: |
-  #      helm upgrade --install kubeip ./charts/kubeip -f ./charts/kubeip/values.yaml --namespace kube-system --kubeconfig $KUBECONFIG
-
-  #  - name: "KUBERNETES - Install Cert Manager"
-  #    run: |
-  #      helm repo add jetstack https://charts.jetstack.io
-  #      helm repo update
-  #      helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.2.0 --set installCRDs=true
-        
-  #  - name: "KUBERNETES - Install Let's Encrypt"
-  #    run: |
-  #      helm upgrade --install letsencrypt ./charts/letsencrypt --kubeconfig $KUBECONFIG      
-
-  #  - name: "KUBERNETES - Install Argo CD"
-  #    run: |
-  #      helm repo add argo https://argoproj.github.io/argo-helm
-  #      helm repo update
-  #      helm upgrade --install argocd argo/argo-cd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG
-     

@@ -9,7 +9,6 @@
 - Create a `ARTIFACTORY_USERNAME` secret on Github. 
 - Create a `ARTIFACTORY_PASSWORD` secret on Github. 
 
-
 ### Usage
 Run the initial build github action twice, as the first time, it will try to connect to kubernetes, but it's not fully up and running yet (giving connection refused errors).
 
@@ -21,3 +20,6 @@ argocd account update-password
     # username = admin
     # password = kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2 
 ```
+
+### App of apps
+After the initial setup is working, we can create
