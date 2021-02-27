@@ -37,7 +37,7 @@ jobs:
     - name: "CLUSTER - Terraform - Init"
       run: terraform -chdir=./terraform init -input=false
 
-    # - name: "CLUSTER - Terraform - Destroy"
+    #- name: "CLUSTER - Terraform - Destroy"
     #  run: terraform -chdir=./terraform destroy -force
 
     - name: "CLUSTER - Terraform - Apply"
