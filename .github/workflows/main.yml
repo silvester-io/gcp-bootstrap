@@ -69,6 +69,7 @@ jobs:
 
     - name: "KUBERNETES - Install Argo CD"
       run: |
+        helm dependency update ./charts/argocd
         helm upgrade --install argocd  ./charts/argocd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG
      
 
