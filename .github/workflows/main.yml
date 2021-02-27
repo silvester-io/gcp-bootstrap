@@ -51,17 +51,29 @@ jobs:
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
       
-    - name: "KUBERNETES - Install Nginx Ingress Controller"
+    - name: "HELM - Install Nginx Ingress Controller"
       run: |
         helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
         helm repo update
         helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -f ./charts/nginx-ingress-controller/values.yaml --namespace ingress-nginx --kubeconfig $KUBECONFIG
 
-
-
-
-
+    - name: "HELM - Install Cert Manager"
+      run: |
+        helm repo add jetstack https://charts.jetstack.io
+        helm repo update
+        helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.2.0 --set installCRDs=true
         
+    - name: "HELM - Install Let's Encrypt"
+      run: |
+        helm upgrade --install letsencrypt ./charts/letsencrypt --kubeconfig $KUBECONFIG      
+
+    - name: "KUBERNETES - Install Argo CD"
+      run: |
+        helm upgrade --install argocd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG
+     
+
+
+
 
   #  TERRAFORM KUBERNETES NAMESPACES
   #  - name: "CLUSTER - Terraform - Init"
