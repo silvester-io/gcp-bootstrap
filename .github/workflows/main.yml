@@ -18,7 +18,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: INSTALL - CLI - GCLoud
+    - name: INSTALL - CLI - GCloud
       uses: google-github-actions/setup-gcloud@master
       with:
         project_id: silvester-306016
