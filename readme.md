@@ -16,7 +16,8 @@ Run the initial build github action twice, as the first time, it will try to con
 ### After successful deployment
 - Change the default ArgoCd password by running:
 ```
-kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2
 argocd login <ARGOCD_SERVER>  # e.g. localhost:8080 or argocd.example.com
-argocd account update-password
+argocd account update-password 
+    # username = admin
+    # password = kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2 
 ```

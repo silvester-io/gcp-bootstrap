@@ -43,7 +43,6 @@ jobs:
     - name: "CLUSTER - Terraform - Apply"
       run: terraform -chdir=./terraform apply -input=false -auto-approve
  
-    # INSTALL KUBERNETES APPLICATIONS
     - name: "KUBERNETES - Set Credentials"
       uses: google-github-actions/get-gke-credentials@main 
       with:
@@ -51,13 +50,20 @@ jobs:
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
       
+
+
+    # ARTIFACTORY    
+    # Using Terraform for secrets is inherently unsafe as the secret values (even when passed in through TF_VAR_ variables) are stored unencrypted in the Terraform state.    
     - name: "KUBERNETES - Delete Existing Artifactory Secret"
       run: kubectl delete secret artifactory-credentials
       continue-on-error: true
 
-    - name: "KUBERNETES - Delete Existing Artifactory Secret"
+    - name: "KUBERNETES - Create Artifactory Secret"
       run: kubectl create secret docker-registry artifactory-credentials --docker-server=silvester.jfrog.io --docker-username=${{secrets.ARTIFACTORY_USERNAME}} --docker-password=${{secrets.ARTIFACTORY_PASSWORD}} --docker-email=${{secrets.ARTIFACTORY_USERNAME}}
 
+
+
+    # HELM  
     - name: "HELM - Install Nginx Ingress Controller"
       run: |
         helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
