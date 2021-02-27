@@ -37,12 +37,6 @@ provider "kubernetes" {
   token                  = module.cluster_auth.token
 }
 
-resource "kubernetes_namespace" "namespace_ingress_nginx" {
-    metadata { 
-      name = "ingress-nginx"
-    }
-}
-
 resource "kubernetes_namespace" "namespace_argocd" {
     metadata {
       name = "argocd"
