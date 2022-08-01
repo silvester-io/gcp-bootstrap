@@ -1,0 +1,8 @@
+gcp:
+  projectID: silvester-306016
+
+external-secrets:
+  serviceAccount:
+    annotations:
+      iam.gke.io/gcp-service-account: external-secrets@silvester-306016.iam.gserviceaccount.com
+  

@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: "INSTALL - CLI - GCloud"
-      uses: google-github-actions/setup-gcloud@main
+      uses: google-github-actions/setup-gcloud@v0
       with:
         project_id: silvester-306016
         service_account_key: ${{ secrets.GCP_SA_KEY }}
@@ -69,9 +69,8 @@ jobs:
         
     - name: "HELM - Install Let's Encrypt"
       run: |
-        helm upgrade --install letsencrypt ./charts/letsencrypt --kubeconfig $KUBECONFIG      
+        helm upgrade --install letsencrypt ./charts/letsencrypt --kubeconfig $KUBECONFIG         
 
-    - name: "HELM - Install Argo CD"
+    - name: "HELM - Install External Secrets"
       run: |
-        helm dependency update ./charts/argocd
-        helm upgrade --install argocd  ./charts/argocd -f ./charts/argocd/values.yaml --namespace argocd --kubeconfig $KUBECONFIG
+        helm upgrade --install external-secrets ./charts/external-secrets --kubeconfig $KUBECONFIG      
