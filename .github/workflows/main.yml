@@ -73,4 +73,4 @@ jobs:
 
     - name: "HELM - Install External Secrets"
       run: |
-        helm upgrade --install external-secrets ./charts/external-secrets --kubeconfig $KUBECONFIG      
+        helm upgrade --install external-secrets ./charts/external-secrets --namespace external-secrets --kubeconfig $KUBECONFIG      

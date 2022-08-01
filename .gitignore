@@ -3,3 +3,8 @@
 
 **/.terraform.lock.hcl
 **/.terraform/**
+
+**/Chart.lock
+**/external-secrets/charts
+**/letsencrypt/charts
+**/nginx-ingress-controller/charts
