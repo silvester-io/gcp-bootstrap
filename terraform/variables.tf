@@ -11,12 +11,12 @@ variable "network" {
 
 variable "cluster_location" {
     type = string
-    default = "europe-west1-b"
+    default = "europe-west4-b"
 }
 
 variable "cluster_region" {
     type = string
-    default = "europe-west1"
+    default = "europe-west4"
 }
 
 variable "cluster_name" {
