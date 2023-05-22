@@ -1,0 +1,279 @@
+{
+    "apiVersion": "argoproj.io/v1alpha1",
+    "kind": "Application",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"argoproj.io/v1alpha1\",\"kind\":\"Application\",\"metadata\":{\"annotations\":{},\"finalizers\":[\"resources-finalizer.argocd.argoproj.io\"],\"labels\":{\"argocd.argoproj.io/instance\":\"argocd\"},\"name\":\"the-farmer-applications\",\"namespace\":\"argocd\"},\"spec\":{\"destination\":{\"namespace\":\"argocd\",\"server\":\"https://kubernetes.default.svc\"},\"project\":\"argocd\",\"source\":{\"helm\":{\"valueFiles\":[\"values.yaml\"]},\"path\":\"chart\",\"repoURL\":\"ssh://git@github.com:22/the-farmer-trading/applications-gitops.git\",\"targetRevision\":\"HEAD\"},\"syncPolicy\":{\"automated\":{\"prune\":true,\"selfHeal\":true},\"syncOptions\":[\"CreateNamespace=true\"]}}}\n",
+            "meta.helm.sh/release-name": "argocd",
+            "meta.helm.sh/release-namespace": "argocd"
+        },
+        "creationTimestamp": "2022-08-01T19:32:57Z",
+        "deletionGracePeriodSeconds": 0,
+        "deletionTimestamp": "2022-08-02T16:28:15Z",
+        "finalizers": [
+            "resources-finalizer.argocd.argoproj.io"
+        ],
+        "generation": 506,
+        "labels": {
+            "app.kubernetes.io/managed-by": "Helm",
+            "argocd.argoproj.io/instance": "argocd"
+        },
+        "name": "the-farmer-applications",
+        "namespace": "argocd",
+        "resourceVersion": "241261658",
+        "uid": "5c0a5c72-9d3e-474a-978d-8d1ea2c84146"
+    },
+    "spec": {
+        "destination": {
+            "namespace": "argocd",
+            "server": "https://kubernetes.default.svc"
+        },
+        "project": "argocd",
+        "source": {
+            "helm": {
+                "valueFiles": [
+                    "values.yaml"
+                ]
+            },
+            "path": "chart",
+            "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+            "targetRevision": "HEAD"
+        },
+        "syncPolicy": {
+            "automated": {
+                "prune": true,
+                "selfHeal": true
+            },
+            "syncOptions": [
+                "CreateNamespace=true"
+            ]
+        }
+    },
+    "status": {
+        "health": {
+            "status": "Progressing"
+        },
+        "history": [
+            {
+                "deployStartedAt": "2022-08-02T16:00:29Z",
+                "deployedAt": "2022-08-02T16:00:30Z",
+                "id": 0,
+                "revision": "4bb4c85763df22e6200353c10594e6744bced0c1",
+                "source": {
+                    "helm": {
+                        "valueFiles": [
+                            "values.yaml"
+                        ]
+                    },
+                    "path": "chart",
+                    "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+                    "targetRevision": "HEAD"
+                }
+            },
+            {
+                "deployStartedAt": "2022-08-02T16:01:46Z",
+                "deployedAt": "2022-08-02T16:01:47Z",
+                "id": 1,
+                "revision": "6824a2d0de10eb5c4c619e2907fd82499999ae2f",
+                "source": {
+                    "helm": {
+                        "valueFiles": [
+                            "values.yaml"
+                        ]
+                    },
+                    "path": "chart",
+                    "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+                    "targetRevision": "HEAD"
+                }
+            },
+            {
+                "deployStartedAt": "2022-08-02T16:01:48Z",
+                "deployedAt": "2022-08-02T16:01:48Z",
+                "id": 2,
+                "revision": "4bb4c85763df22e6200353c10594e6744bced0c1",
+                "source": {
+                    "helm": {
+                        "valueFiles": [
+                            "values.yaml"
+                        ]
+                    },
+                    "path": "chart",
+                    "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+                    "targetRevision": "HEAD"
+                }
+            },
+            {
+                "deployStartedAt": "2022-08-02T16:02:54Z",
+                "deployedAt": "2022-08-02T16:02:56Z",
+                "id": 3,
+                "revision": "5dc1df59e736950a5e1061a665c854cdeba94125",
+                "source": {
+                    "helm": {
+                        "valueFiles": [
+                            "values.yaml"
+                        ]
+                    },
+                    "path": "chart",
+                    "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+                    "targetRevision": "HEAD"
+                }
+            },
+            {
+                "deployStartedAt": "2022-08-02T16:02:56Z",
+                "deployedAt": "2022-08-02T16:02:56Z",
+                "id": 4,
+                "revision": "4bb4c85763df22e6200353c10594e6744bced0c1",
+                "source": {
+                    "helm": {
+                        "valueFiles": [
+                            "values.yaml"
+                        ]
+                    },
+                    "path": "chart",
+                    "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+                    "targetRevision": "HEAD"
+                }
+            },
+            {
+                "deployStartedAt": "2022-08-02T16:04:58Z",
+                "deployedAt": "2022-08-02T16:04:58Z",
+                "id": 5,
+                "revision": "5dc1df59e736950a5e1061a665c854cdeba94125",
+                "source": {
+                    "helm": {
+                        "valueFiles": [
+                            "values.yaml"
+                        ]
+                    },
+                    "path": "chart",
+                    "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+                    "targetRevision": "HEAD"
+                }
+            }
+        ],
+        "operationState": {
+            "finishedAt": "2022-08-02T16:10:09Z",
+            "message": "successfully synced (all tasks run)",
+            "operation": {
+                "initiatedBy": {
+                    "automated": true
+                },
+                "retry": {
+                    "limit": 5
+                },
+                "sync": {
+                    "prune": true,
+                    "resources": [
+                        {
+                            "group": "argoproj.io",
+                            "kind": "AppProject",
+                            "name": "the-farmer"
+                        }
+                    ],
+                    "revision": "5dc1df59e736950a5e1061a665c854cdeba94125",
+                    "syncOptions": [
+                        "CreateNamespace=true"
+                    ]
+                }
+            },
+            "phase": "Succeeded",
+            "startedAt": "2022-08-02T16:10:09Z",
+            "syncResult": {
+                "resources": [
+                    {
+                        "group": "argoproj.io",
+                        "hookPhase": "Running",
+                        "kind": "AppProject",
+                        "message": "appproject.argoproj.io/the-farmer created",
+                        "name": "the-farmer",
+                        "namespace": "argocd",
+                        "status": "Synced",
+                        "syncPhase": "Sync",
+                        "version": "v1alpha1"
+                    }
+                ],
+                "revision": "5dc1df59e736950a5e1061a665c854cdeba94125",
+                "source": {
+                    "helm": {
+                        "valueFiles": [
+                            "values.yaml"
+                        ]
+                    },
+                    "path": "chart",
+                    "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+                    "targetRevision": "HEAD"
+                }
+            }
+        },
+        "reconciledAt": "2022-08-02T16:28:36Z",
+        "resources": [
+            {
+                "group": "argoproj.io",
+                "health": {
+                    "status": "Missing"
+                },
+                "kind": "AppProject",
+                "name": "the-farmer",
+                "namespace": "argocd",
+                "status": "OutOfSync",
+                "version": "v1alpha1"
+            },
+            {
+                "group": "argoproj.io",
+                "health": {
+                    "status": "Missing"
+                },
+                "kind": "Application",
+                "name": "keycloak",
+                "namespace": "argocd",
+                "status": "OutOfSync",
+                "version": "v1alpha1"
+            },
+            {
+                "group": "argoproj.io",
+                "health": {
+                    "status": "Missing"
+                },
+                "kind": "Application",
+                "name": "portal",
+                "namespace": "argocd",
+                "status": "OutOfSync",
+                "version": "v1alpha1"
+            },
+            {
+                "group": "external-secrets.io",
+                "health": {
+                    "message": "Pending deletion",
+                    "status": "Progressing"
+                },
+                "kind": "ExternalSecret",
+                "name": "artifactory-credentials-the-farmer",
+                "namespace": "argocd",
+                "status": "Synced",
+                "version": "v1beta1"
+            }
+        ],
+        "sourceType": "Helm",
+        "summary": {},
+        "sync": {
+            "comparedTo": {
+                "destination": {
+                    "namespace": "argocd",
+                    "server": "https://kubernetes.default.svc"
+                },
+                "source": {
+                    "helm": {
+                        "valueFiles": [
+                            "values.yaml"
+                        ]
+                    },
+                    "path": "chart",
+                    "repoURL": "ssh://git@github.com:22/the-farmer-trading/applications-gitops.git",
+                    "targetRevision": "HEAD"
+                }
+            },
+            "revision": "5dc1df59e736950a5e1061a665c854cdeba94125",
+            "status": "OutOfSync"
+        }
+    }
+}

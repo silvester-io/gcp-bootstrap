@@ -20,7 +20,7 @@ variable "kubernetes_namespace" {
 
 variable "cluster_region" {
     type = string
-    default = "europe-west1"
+    default = "europe-west4"
 }
 
 variable "cluster_name" {
